@@ -16,6 +16,12 @@ import OnlineClasses from "./pages/OnlineClasses.jsx";
 import OfflineClasses from "./pages/OfflineClasses.jsx";
 import Placement from "./pages/Placement.jsx";
 import Contact from "./pages/Contact.jsx";
+import Trainer from "./components/about/Trainer.jsx";
+
+
+
+
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -45,6 +51,7 @@ export default function App() {
         <Route path="/classes/offline" element={<OfflineClasses />} />
         <Route path="/placement" element={<Placement />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/trainer/:id" element={<Trainer />} />
       </Routes>
       <Footer />
       <WhatsAppButton />
