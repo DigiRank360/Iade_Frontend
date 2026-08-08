@@ -9,7 +9,7 @@ const NAV_ITEMS = [
     to: "/about",
     label: "About Us",
     children: [
-      { to: "/trainers", label: "Our Trainer" },
+      { to: "/trainer", label: "Our Trainer" },
       { to: "/reviews", label: "IADE Reviews" },
       { to: "/gallery", label: "Our Gallery" },
     ],

@@ -7,7 +7,7 @@ import WhatsAppButton from "./components/WhatsAppButton.jsx";
 
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
-import Trainers from "./pages/Trainers.jsx";
+// import Trainers from "./pages/Trainers.jsx";
 import Reviews from "./pages/Reviews.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import Courses from "./pages/Courses.jsx";
@@ -17,11 +17,21 @@ import OfflineClasses from "./pages/OfflineClasses.jsx";
 import Placement from "./pages/Placement.jsx";
 import Contact from "./pages/Contact.jsx";
 import Trainer from "./components/about/Trainer.jsx";
-
-
-
-
-
+import Review from "./components/about/Review.jsx";
+import Gallerys from "./components/about/Gallery.jsx";
+import DigitalMMC from "./components/course/DigitalMMC.jsx";
+import Seo from "./components/course/Seo.jsx";
+import GoogleAds from "./components/course/GoogleAd.jsx";
+import SocialMM from "./components/course/SocialMM.jsx";
+import FullStackDev from "./components/course/FullStackDev.jsx";
+import Wordpress from "./components/course/Wordpress.jsx";
+import GraphicsDesigning from "./components/course/GraphicDesign.jsx";
+import VideoEditing from "./components/course/VideoEditing.jsx";
+import LaptopRepairing from "./components/course/LaptopRepairing.jsx";
+import OnlineClass from "./components/classes/OnlineClass.jsx";
+import OfflineClass from "./components/classes/OfflineClass.jsx";
+import DigitalMA from "./components/placement/DigitalMA.jsx";
+import Hire from "./components/placement/Hire.jsx";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -42,7 +52,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/trainers" element={<Trainers />} />
+        {/* <Route path="/trainers" element={<Trainers />} /> */}
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/courses" element={<Courses />} />
@@ -51,7 +61,22 @@ export default function App() {
         <Route path="/classes/offline" element={<OfflineClasses />} />
         <Route path="/placement" element={<Placement />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/trainer/:id" element={<Trainer />} />
+        <Route path="/trainer" element={<Trainer />} />
+        <Route path="/review" element={<Review />} />
+        <Route path="/gallerys" element={<Gallerys />} />
+        <Route path="/digitalmmc" element={<DigitalMMC />} />
+        <Route path="/seo" element={<Seo />} />
+        <Route path="/google-ads" element={<GoogleAds />} />
+        <Route path="/social-media" element={<SocialMM />} />
+        <Route path="/fullstack-dev" element={<FullStackDev />} />
+        <Route path="/wordpress" element={<Wordpress />} />
+        <Route path="/graphics-designing" element={<GraphicsDesigning />} />
+        <Route path="/video-editing" element={<VideoEditing />} />
+        <Route path="/laptop-repairing" element={<LaptopRepairing />} />
+        <Route path="/online-class" element={<OnlineClass />} />
+        <Route path="/offline-class" element={<OfflineClass />} />
+        <Route path="/digital-ma" element={<DigitalMA />} />
+        <Route path="/hire" element={<Hire />} />
       </Routes>
       <Footer />
       <WhatsAppButton />
