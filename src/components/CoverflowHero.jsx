@@ -4,14 +4,53 @@ import MockScreen from "./MockScreen.jsx";
 import { useReducedMotion } from "../utils/useReducedMotion.js";
 
 const PANELS = [
-  { kicker: "Full Stack Web Development", title: "Build Real Apps", tone: "light", img: "https://images.unsplash.com/photo-1624996752380-8ec242e0f85d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHdlYiUyMGRldmVsb3BtZW50fGVufDB8fDB8fHww" },
-  { kicker: "SEO · GEO + AEO", title: "Rank On Search & AI", tone: "dark", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop" },
-  { kicker: "Digital Marketing", title: "Master Class", tone: "light", img: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&auto=format&fit=crop" },
-  { kicker: "Google Ads", title: "Adds On Google", tone: "dark" }, // center slot
-  { kicker: "Placement", title: "100% Support", tone: "light", img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop" },
-  { kicker: "Graphic Design", title: "Design With Intent", tone: "dark", img: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop" },
-  { kicker: "Video Editing", title: "Cut. Grade. Ship.", tone: "light", img: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&auto=format&fit=crop" },
-  { kicker: "Laptop Repairing course", title: "Chip level Engineer", tone: "dark", img: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&auto=format&fit=crop" },
+  {
+    kicker: "Full Stack Web Development",
+    title: "Build Real Apps",
+    tone: "light",
+    img: "https://images.unsplash.com/photo-1624996752380-8ec242e0f85d?w=900&auto=format&fit=crop&q=60",
+  },
+  {
+    kicker: "SEO · GEO + AEO",
+    title: "Rank On Search & AI",
+    tone: "dark",
+    img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop",
+  },
+  {
+    kicker: "Digital Marketing",
+    title: "Master Class",
+    tone: "light",
+    img: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&auto=format&fit=crop",
+  },
+  {
+    kicker: "Google Ads",
+    title: "Ads On Google",
+    tone: "dark",
+  },
+  {
+    kicker: "Placement",
+    title: "100% Support",
+    tone: "light",
+    img: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&auto=format&fit=crop",
+  },
+  {
+    kicker: "Graphic Design",
+    title: "Design With Intent",
+    tone: "dark",
+    img: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop",
+  },
+  {
+    kicker: "Video Editing",
+    title: "Cut. Grade. Ship.",
+    tone: "light",
+    img: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&auto=format&fit=crop",
+  },
+  {
+    kicker: "Laptop Repairing Course",
+    title: "Chip Level Engineer",
+    tone: "dark",
+    img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop",
+  },
 ];
 
 export default function CoverflowHero() {
@@ -21,30 +60,44 @@ export default function CoverflowHero() {
   const startX = useRef(0);
   const lastProgress = useRef(0);
   const animRef = useRef(null);
+
   const reduced = useReducedMotion();
 
-  // Infinite Auto Loop
+  /* =====================================================
+     AUTO LOOP
+  ====================================================== */
+
   useEffect(() => {
     if (reduced) return;
 
     let lastTime = performance.now();
-    const speed = 0.0003; 
+
+    const speed = 0.00022;
 
     const animate = (time) => {
       const delta = time - lastTime;
       lastTime = time;
 
       if (!dragging.current) {
-        setProgress((prev) => (prev + delta * speed) % PANELS.length);
+        setProgress(
+          (prev) => (prev + delta * speed) % PANELS.length
+        );
       }
+
       animRef.current = requestAnimationFrame(animate);
     };
 
     animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current);
+
+    return () => {
+      cancelAnimationFrame(animRef.current);
+    };
   }, [reduced]);
 
-  // Pointer/Touch Controls
+  /* =====================================================
+     DRAG / TOUCH CONTROLS
+  ====================================================== */
+
   const onPointerDown = (e) => {
     dragging.current = true;
     startX.current = e.clientX;
@@ -53,10 +106,17 @@ export default function CoverflowHero() {
 
   const onPointerMove = (e) => {
     if (!dragging.current) return;
+
     const deltaX = e.clientX - startX.current;
-    const newProgress = lastProgress.current - deltaX / 300;
+
+    const newProgress =
+      lastProgress.current - deltaX / 320;
+
     const total = PANELS.length;
-    setProgress(((newProgress % total) + total) % total);
+
+    setProgress(
+      ((newProgress % total) + total) % total
+    );
   };
 
   const endDrag = () => {
@@ -64,178 +124,435 @@ export default function CoverflowHero() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-ink pt-24 sm:pt-28 pb-12 text-paper">
-      
-      {/* 🩸 TOP BLOOD RED SHADOW / GLOW ONLY */}
-      <div 
-        className="pointer-events-none absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-brand/40 via-brand/10 to-transparent z-0 blur-2xl opacity-80"
-        aria-hidden="true"
-      />
-      {/* Top Edge Glow Strip */}
-      <div 
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[70vw] h-24 bg-brand/30 blur-[80px] z-0 rounded-full"
-        aria-hidden="true"
-      />
+    <section className="relative w-full overflow-hidden bg-ink pt-24 sm:pt-28 pb-8 text-paper">
 
-      {/* Animated IADE Wordmark CSS */}
-      <style>{`
-        @keyframes iadeBrandEntrance {
-          0% {
-            opacity: 0;
-            transform: scale(0.6) translateY(20px);
-            filter: blur(12px);
-          }
-          60% {
-            opacity: 1;
-            transform: scale(1.08) translateY(-5px);
-            filter: blur(0px);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
+      {/* =====================================================
+          TOP RED GRADIENT
+      ====================================================== */}
 
-        .animate-iade-brand {
-          animation: iadeBrandEntrance 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}</style>
-
-      {/* Coverflow Stage */}
       <div
-        className="relative z-10 h-[68vh] sm:h-[75vh] min-h-[480px] select-none touch-pan-y cursor-grab active:cursor-grabbing"
+        className="pointer-events-none absolute top-0 left-0 right-0 h-56 bg-gradient-to-b from-brand/30 via-brand/10 to-transparent blur-2xl opacity-80"
+        aria-hidden="true"
+      />
+
+      <div
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[65vw] h-28 bg-brand/15 blur-[90px] rounded-full"
+        aria-hidden="true"
+      />
+
+      {/* =====================================================
+          HERO INTRO
+      ====================================================== */}
+
+      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 pt-6 sm:pt-8">
+
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+
+          {/* =================================================
+              LEFT CONTENT
+          ================================================= */}
+
+          <div className="text-left">
+
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-5">
+
+              <span className="block w-8 h-[1px] bg-brand" />
+
+              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-brand">
+                Welcome to Indian Academy Of Digital Education
+              </span>
+
+            </div>
+
+            {/* Main Heading */}
+            <h2
+              className="
+                font-display
+                text-3xl
+                sm:text-3xl
+                md:text-5xl
+                lg:text-[3.5rem]
+                xl:text-[4rem]
+                font-black
+                leading-[0.95]
+                tracking-tight
+                uppercase
+              "
+            >
+
+              <span className="text-paper">
+                Learn Digital
+              </span>
+
+              <br />
+
+              <span className="text-paper">
+                Marketing.
+              </span>
+
+              <br />
+
+              <span className="text-paper">
+                Build Skills.
+              </span>
+
+              <br />
+
+              <span className="text-brand">
+                Get Hired.
+              </span>
+
+            </h2>
+
+            {/* Supporting Statement */}
+            <p className="mt-6 max-w-lg text-sm sm:text-base md:text-lg leading-relaxed text-brand font-medium">
+              Learn practical skills. Build your career.
+              Get ready for the future of digital work.
+            </p>
+
+          </div>
+
+          {/* =================================================
+              RIGHT CONTENT
+          ================================================= */}
+
+          <div className="lg:pt-10">
+
+            {/* Description */}
+            <p className="max-w-xl text-sm sm:text-base md:text-lg leading-[1.65] text-paper/55">
+
+              At Indian Academy Of Digital Education, we help
+              students build practical digital skills, gain
+              industry-ready experience, and prepare for
+              future-ready careers.
+
+              {" "}
+
+              Whether you want to master digital marketing,
+              SEO, Google Ads, social media, web development,
+              design, video editing, or technical skills,
+              our programs are designed to help you learn
+              with real-world applications.
+
+            </p>
+
+            {/* Skill / Career / Growth */}
+            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[9px] sm:text-[10px] uppercase tracking-[0.28em] font-bold">
+
+              <span className="text-paper/50">
+                Skills
+              </span>
+
+              <span className="text-brand">
+                •
+              </span>
+
+              <span className="text-paper/50">
+                Career
+              </span>
+
+              <span className="text-brand">
+                •
+              </span>
+
+              <span className="text-paper/50">
+                Growth
+              </span>
+
+            </div>
+
+            {/* Buttons */}
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+
+              {/* Let's Talk */}
+              <Link
+                to="/contact"
+                className="
+                  inline-flex
+                  items-center
+                  justify-center
+                  rounded-md
+                  bg-brand
+                  px-6
+                  py-3
+                  text-[10px]
+                  sm:text-xs
+                  font-bold
+                  uppercase
+                  tracking-wider
+                  text-white
+                  shadow-lg
+                  shadow-brand/20
+                  transition-all
+                  duration-300
+                  hover:bg-brandDark
+                  hover:-translate-y-0.5
+                "
+              >
+                Let's Talk
+              </Link>
+
+              {/* Explore Courses */}
+              <Link
+                to="/courses"
+                className="
+                  inline-flex
+                  items-center
+                  justify-center
+                  rounded-md
+                  border
+                  border-white/15
+                  bg-white/[0.04]
+                  px-6
+                  py-3
+                  text-[10px]
+                  sm:text-xs
+                  font-bold
+                  uppercase
+                  tracking-wider
+                  text-paper
+                  backdrop-blur-sm
+                  transition-all
+                  duration-300
+                  hover:bg-white/10
+                  hover:border-white/25
+                  hover:-translate-y-0.5
+                "
+              >
+                Explore Courses
+              </Link>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* =====================================================
+          COVERFLOW STAGE
+      ====================================================== */}
+
+      <div
+        className="
+          relative
+          z-10
+          mt-7
+          sm:mt-9
+          h-[52vh]
+          sm:h-[58vh]
+          min-h-[400px]
+          select-none
+          touch-pan-y
+          cursor-grab
+          active:cursor-grabbing
+        "
         style={{ perspective: "1800px" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerLeave={endDrag}
       >
+
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {PANELS.map((p, i) => {
+
+          {PANELS.map((panel, index) => {
             const count = PANELS.length;
-            
-            let offset = (i - progress) % count;
-            if (offset > count / 2) offset -= count;
-            if (offset < -count / 2) offset += count;
+
+            let offset = (index - progress) % count;
+
+            if (offset > count / 2) {
+              offset -= count;
+            }
+
+            if (offset < -count / 2) {
+              offset += count;
+            }
 
             const abs = Math.abs(offset);
-            const rotateY = Math.max(-55, Math.min(55, offset * -22));
-            
-            const translateX = offset * 260; 
-            const translateZ = -abs * 180;
-            const scale = Math.max(0.55, 1 - abs * 0.14);
-            const opacity = Math.max(0, 1 - abs * 0.28);
 
-            const isCenter = p.tone === "center" && abs < 0.5;
+            const rotateY = Math.max(
+              -50,
+              Math.min(50, offset * -20)
+            );
+
+            const translateX = offset * 270;
+
+            const translateZ = -abs * 190;
+
+            const scale = Math.max(
+              0.58,
+              1 - abs * 0.13
+            );
+
+            const opacity = Math.max(
+              0,
+              1 - abs * 0.3
+            );
 
             return (
               <div
-                key={i}
+                key={index}
+                className="absolute"
                 style={{
-                  position: "absolute",
                   width: "clamp(220px, 28vw, 380px)",
                   height: "clamp(300px, 38vw, 500px)",
-                  transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                  transform: `
+                    translateX(${translateX}px)
+                    translateZ(${translateZ}px)
+                    rotateY(${rotateY}deg)
+                    scale(${scale})
+                  `,
                   opacity,
-                  filter: `brightness(${1 - abs * 0.15})`,
+                  filter: `brightness(${1 - abs * 0.12})`,
                   zIndex: Math.round(50 - abs * 10),
                   pointerEvents: "none",
                   willChange: "transform, opacity",
                 }}
               >
-                {!isCenter && (
-                  <div className="group relative w-full h-full overflow-hidden shadow-2xl shadow-black/80 border border-white/15 bg-neutral-950">
-                    {/* Background Panel Image */}
-                    {p.img && (
-                      <img
-                        src={p.img}
-                        alt={p.title}
-                        className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay transition-opacity duration-300"
-                        loading="lazy"
-                      />
-                    )}
 
-                    {/* Content Screen */}
-                    <div className="relative z-10 w-full h-full">
-                      <MockScreen kicker={p.kicker} title={p.title} tone={p.tone} />
-                    </div>
+                {/* CARD */}
+                <div className="group relative w-full h-full overflow-hidden bg-neutral-950 border border-white/10 shadow-2xl shadow-black/60">
 
-                    {/* Glossy Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-white/10 pointer-events-none" />
+                  {/* Background Image */}
+                  {panel.img && (
+                    <img
+                      src={panel.img}
+                      alt={panel.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-45"
+                      loading="lazy"
+                    />
+                  )}
+
+                  {/* Dark Overlay */}
+                  <div className="absolute inset-0 bg-black/25" />
+
+                  {/* Mock Screen */}
+                  <div className="relative z-10 w-full h-full">
+                    <MockScreen
+                      kicker={panel.kicker}
+                      title={panel.title}
+                      tone={panel.tone}
+                    />
                   </div>
-                )}
+
+                  {/* Bottom Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-white/[0.04] pointer-events-none" />
+
+                </div>
+
               </div>
             );
           })}
+
         </div>
 
-        {/* Wordmark Overlay */}
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
-          
-          {/* 🩸 H1 with minimal red glow text shadow */}
-          <h1 className="animate-iade-brand relative text-[18vw] sm:text-[10vw] leading-none font-display font-black uppercase tracking-tight select-none drop-shadow-[0_0_12px_rgba(200,16,46,0.65)]">
-            {/* Letter I - Pure White */}
-            <span className="text-paper">I</span>
+        {/* =================================================
+            IADE WORDMARK
+        ================================================= */}
 
-            {/* Letter A with Black Graduation Cap on top */}
-            <span className="relative inline-block">
-              {/* Graduation Cap */}
-              <svg
-                viewBox="0 0 100 60"
-                className="absolute left-1/2 -translate-x-1/2 -top-[0.24em] w-[0.7em] h-auto drop-shadow-[0_0_8px_rgba(200,16,46,0.7)]"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <polygon points="50,2 98,22 50,42 2,22" fill="#000000" stroke="#FFFFFF" strokeWidth="1.5" />
-                <polygon points="50,42 78,30 78,44 50,54 22,44 22,30" fill="#000000" stroke="#FFFFFF" strokeWidth="1.5" />
-                <line x1="88" y1="22" x2="88" y2="46" stroke="#000000" strokeWidth="4" />
-                <circle cx="88" cy="49" r="5" fill="#C8102E" />
-              </svg>
-              {/* Red Letter A */}
-              <span className="text-brand">A</span>
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+
+          <h1
+            className="
+              text-[15vw]
+              sm:text-[9vw]
+              leading-none
+              font-display
+              font-black
+              uppercase
+              tracking-tight
+              select-none
+            "
+          >
+
+            {/* I — BLACK */}
+            <span className="text-black">
+              I
             </span>
 
-            {/* Letter D - Pure White */}
-            <span className="text-paper">D</span>
+            {/* A — RED */}
+            <span className="text-brand">
+              A
+            </span>
 
-            {/* Letter E - Dark Crimson / Maroon Red */}
-            <span className="text-brandDark">E</span>
+            {/* D — BLACK */}
+            <span className="text-black">
+              D
+            </span>
+
+            {/* E — DARK RED */}
+            <span className="text-brandDark">
+              E
+            </span>
+
           </h1>
 
-          {/* Tagline matching logo layout with subtle red drop-shadow */}
-          <p className="mt-3 text-xs sm:text-sm font-body tracking-[0.2em] font-bold drop-shadow-[0_0_8px_rgba(200,16,46,0.5)]">
-            <span className="text-paper">Academy of </span>
-            <span className="text-brand">Digital Education</span>
+          {/* Tagline */}
+          <p className="mt-3 text-[10px] sm:text-xs font-body tracking-[0.2em] font-semibold uppercase">
+
+            <span className="text-paper">
+              Academy of{" "}
+            </span>
+
+            <span className="text-brand">
+              Digital Education
+            </span>
+
           </p>
 
-          {/* Subline */}
-          <p className="mt-1 text-[10px] sm:text-xs font-body uppercase tracking-[0.3em] text-paper/70 font-medium">
+          {/* Location */}
+          <p className="mt-1.5 text-[9px] sm:text-[10px] font-body uppercase tracking-[0.35em] text-paper/50">
             Bhopal
           </p>
+
         </div>
+
       </div>
 
-      {/* Dots Indicator */}
-      <div className="relative z-20 flex items-center justify-center gap-2 pb-10">
-        {PANELS.map((_, i) => {
-          const currentActive = Math.round(progress) % PANELS.length;
-          const isActive = currentActive === i;
+      {/* =====================================================
+          SLIDER INDICATORS
+      ====================================================== */}
+
+      <div className="relative z-20 flex items-center justify-center gap-2 pb-6">
+
+        {PANELS.map((_, index) => {
+          const currentActive =
+            Math.round(progress) % PANELS.length;
+
+          const isActive =
+            currentActive === index;
+
           return (
             <button
-              key={i}
-              onClick={() => setProgress(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                isActive ? "w-6 bg-paper shadow-sm shadow-white" : "w-1.5 bg-paper/30"
-              }`}
+              key={index}
+              onClick={() => setProgress(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`
+                h-1
+                rounded-full
+                transition-all
+                duration-300
+                ${
+                  isActive
+                    ? "w-6 bg-paper"
+                    : "w-1.5 bg-paper/25 hover:bg-paper/50"
+                }
+              `}
             />
           );
         })}
+
       </div>
 
-      <div className="relative z-10 border-t border-white/10" />
+      {/* Minimal Divider */}
+      <div className="relative z-10 border-t border-white/[0.06]" />
+
     </section>
   );
 }

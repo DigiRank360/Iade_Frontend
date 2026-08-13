@@ -133,7 +133,7 @@ export default function HeroSection() {
             className="group relative w-full aspect-[4/3] rounded-none border border-white/10 bg-surface cursor-pointer shadow-2xl overflow-hidden"
           >
             <img
-              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80"
+              src="https://media.istockphoto.com/id/491116880/photo/hands-on-laptop-closeup.webp?a=1&b=1&s=612x612&w=0&k=20&c=0lftOSuSLVlLSJeDBLrvRAkH3GlDolcptjoF3O2iFxc="
               alt="Watch Live Demo Class"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
