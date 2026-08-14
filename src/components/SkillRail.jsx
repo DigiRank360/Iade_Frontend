@@ -21,7 +21,7 @@ export default function SkillRail() {
     if (!container) return;
 
     let animationFrameId;
-    const speed = 0.8;
+    const speed = 1.5;
 
     const scroll = () => {
       if (!isPaused && !dragging) {

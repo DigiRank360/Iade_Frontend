@@ -16,7 +16,7 @@ export const COURSES = [
     title: "Search Engine Optimization (GEO + AEO)",
     tag: "Search",
     duration: "6 Weeks",
-    image: "https://images.unsplash.com/photo-1571721795195-a2ca2d3370a9?auto=format&fit=crop&q=80&w=800",
+    image: "https://plus.unsplash.com/premium_photo-1684356819451-35a6a50ba57e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fHNlYXJjaCUyMGVuZ2luZSUyMG9wdGltaXphdGlvbiUyMChzZW8pfGVufDB8fDB8fHww",
     summary:
       "Rank pages the way search — and AI answer engines — actually read them today, from technical SEO to generative/answer engine optimization.",
     highlights: ["Technical SEO", "On-page & content", "Generative Engine Optimization", "Answer Engine Optimization"],
@@ -38,7 +38,7 @@ export const COURSES = [
     title: "Social Media Marketing",
     tag: "Growth",
     duration: "4 Weeks",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1724862936518-ae7fcfc052c1?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c29jaWFsJTIwbWVkaWElMjBtYXJrZXRpbmd8ZW58MHx8MHx8fDA%3D",
     summary:
       "Build and run content calendars, paid campaigns and community strategy across Meta and beyond.",
     highlights: ["Meta Ads", "Content strategy", "Community management", "Analytics"],

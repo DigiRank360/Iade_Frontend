@@ -7,6 +7,7 @@ import WhatsAppButton from "./components/WhatsAppButton.jsx";
 
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
+import EnrollCTA from "./components/EnrollCTA.jsx";
 // import Trainers from "./pages/Trainers.jsx";
 import Reviews from "./pages/Reviews.jsx";
 import Gallery from "./pages/Gallery.jsx";

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Users, 
-  Star, 
-  Clock, 
-  CheckCircle2,
+import {
+  Users,
+  Star,
+  Clock,
   Linkedin,
   Instagram,
   Twitter,
@@ -15,13 +14,9 @@ import {
   Award,
   Briefcase,
   GraduationCap,
-  Mail,
-  Phone,
-  MapPin,
   Quote,
   ArrowUp,
   ChevronDown,
-  Play,
   Zap,
   TrendingUp,
   Shield,
@@ -39,519 +34,750 @@ import {
   Globe,
   Laptop,
   Calendar,
-  UserPlus
 } from 'lucide-react';
 
-// Trainer Data
+import EnrollCTA from '../EnrollCTA';
+import kusal from '../../assets/trainer/kusal.png';
+import chetna from '../../assets/trainer/chetna.png';
+import pratiksha from '../../assets/trainer/pratiksha.png';
+import hari from '../../assets/trainer/hari.png';
+
+/* =========================================================
+   TRAINERS
+========================================================= */
+
 const TRAINERS = [
   {
     id: 1,
-    name: "Pragati Warkade",
-    role: "Academic Counsellor",
-    specialty: "Career Mentor",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-    qualification: "MSC- Botany (RDVV Jabalpur) / PGDCA (MCU)",
-    experience: "3+ Years",
-    color: "brand",
-    expertise: ["Career Guidance", "Academic Planning", "Student Mentoring"],
-    quote: "Every student has unique potential. My goal is to help them discover and nurture it.",
-    social: { linkedin: "#", instagram: "#" }
+    name: 'Pragati Warkade',
+    role: 'Academic Counsellor',
+    specialty: 'Career Mentor',
+    image:
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=85',
+    qualification: 'MSC- Botany (RDVV Jabalpur) / PGDCA (MCU)',
+    experience: '3+ Years',
+    expertise: [
+      'Career Guidance',
+      'Academic Planning',
+      'Student Mentoring',
+    ],
+    quote:
+      'Every student has unique potential. My goal is to help them discover and nurture it.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+    },
   },
   {
     id: 2,
-    name: "Anya Sen",
-    role: "SEO Specialist",
-    specialty: "SEO Mentor",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=600&q=80",
-    qualification: "MBA in DM, Google Digital Garage Certified, Advanced SEO Certified",
-    experience: "5+ Years",
-    color: "brand",
-    expertise: ["SEO Strategy", "Content Marketing", "Analytics"],
-    quote: "Search engines evolve, but the core principle remains: create value for users.",
-    social: { linkedin: "#", twitter: "#" }
+    name: 'Pratiksha Waghmare',
+    role: 'SEO Specialist',
+    specialty: 'SEO Mentor',
+    image: pratiksha,
+    qualification:
+      'MBA in DM, Google Digital Garage Certified, Advanced SEO Certified',
+    experience: '5+ Years',
+    expertise: ['SEO Strategy', 'Content Marketing', 'Analytics'],
+    quote:
+      'Search engines evolve, but the core principle remains: create value for users.',
+    social: {
+      linkedin: '#',
+      twitter: '#',
+    },
   },
   {
     id: 3,
-    name: "Hariom Hude",
-    role: "PPC Specialist",
-    specialty: "Ads Mentor",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
-    qualification: "MBA in Marketing and Retail Management, Certified in PPC",
-    experience: "4+ Years",
-    color: "brand",
-    expertise: ["Google Ads", "Campaign Optimization", "ROI Analysis"],
-    quote: "A well-optimized ad campaign is like a precision tool — it delivers exactly what you need.",
-    social: { linkedin: "#", facebook: "#" }
+    name: 'Hariom Hude',
+    role: 'PPC Specialist',
+    specialty: 'Ads Mentor',
+    image: hari,
+    qualification:
+      'MBA in Marketing and Retail Management, Certified in PPC',
+    experience: '4+ Years',
+    expertise: ['Google Ads', 'Campaign Optimization', 'ROI Analysis'],
+    quote:
+      'A well-optimized ad campaign is like a precision tool — it delivers exactly what you need.',
+    social: {
+      linkedin: '#',
+      facebook: '#',
+    },
   },
   {
     id: 4,
-    name: "Khushal Rajput",
-    role: "Photoshop Specialist",
-    specialty: "Graphic Designer Mentor",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80",
-    qualification: "Graphic Certified Trainer, MBA",
-    experience: "4+ Years",
-    color: "brand",
-    expertise: ["Photoshop", "Visual Design", "Brand Identity"],
-    quote: "Design is not just what it looks like — it's how it works and makes people feel.",
-    social: { linkedin: "#", instagram: "#" }
+    name: 'Khushal Rajput',
+    role: 'Photoshop Specialist',
+    specialty: 'Graphic Designer Mentor',
+     image: kusal,
+    qualification: 'Graphic Certified Trainer, MBA',
+    experience: '4+ Years',
+    expertise: ['Photoshop', 'Visual Design', 'Brand Identity'],
+    quote:
+      'Design is not just what it looks like — it is how it works and makes people feel.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+    },
   },
   {
     id: 5,
-    name: "Chetna Malviya",
-    role: "Illustrator Specialist",
-    specialty: "Graphic Designer Mentor",
-    image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80",
-    qualification: "Diploma in Graphic Designing Course, Mumbai",
-    experience: "8+ Years",
-    color: "brand",
-    expertise: ["Illustration", "Vector Art", "Creative Direction"],
-    quote: "Every illustration tells a story. I teach my students to tell stories that connect.",
-    social: { linkedin: "#", instagram: "#" }
+    name: 'Chetna Malviya',
+    role: 'Illustrator Specialist',
+    specialty: 'Graphic Designer Mentor',
+    image: chetna,
+    qualification: 'Diploma in Graphic Designing Course, Mumbai',
+    experience: '8+ Years',
+    expertise: ['Illustration', 'Vector Art', 'Creative Direction'],
+    quote:
+      'Every illustration tells a story. I teach my students to tell stories that connect.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+    },
   },
   {
     id: 6,
-    name: "Ankit Prajapati",
-    role: "WordPress & Full Stack Developer",
-    specialty: "WP & Full Stack Developer Mentor",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=600&q=80",
-    qualification: "B-Tech, WordPress Certified, Full Stack Certified",
-    experience: "2+ Years",
-    color: "brand",
-    expertise: ["WordPress", "React", "Full Stack Development"],
-    quote: "Code is poetry. I help my students write beautiful, functional code.",
-    social: { linkedin: "#", github: "#" }
-  }
+    name: 'Sahil',
+    role: 'WordPress & Full Stack Developer',
+    specialty: 'WP & Full Stack Developer Mentor',
+    image:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=85',
+    qualification: 'B-Tech, WordPress Certified, Full Stack Certified',
+    experience: '2+ Years',
+    expertise: ['WordPress', 'React', 'Full Stack Development'],
+    quote:
+      'Code is poetry. I help my students write beautiful, functional code.',
+    social: {
+      linkedin: '#',
+      github: '#',
+    },
+  },
 ];
 
-// Stats
+/* =========================================================
+   STATS
+========================================================= */
+
 const STATS = [
-  { icon: Users, value: "6+", label: "Expert Trainers" },
-  { icon: Award, value: "15+", label: "Certifications" },
-  { icon: Clock, value: "4+", label: "Avg Experience" },
-  { icon: Star, value: "98%", label: "Student Satisfaction" }
+  {
+    icon: Users,
+    value: '6+',
+    label: 'Expert Trainers',
+  },
+  {
+    icon: Award,
+    value: '15+',
+    label: 'Certifications',
+  },
+  {
+    icon: Clock,
+    value: '4+',
+    label: 'Avg Experience',
+  },
+  {
+    icon: Star,
+    value: '98%',
+    label: 'Student Satisfaction',
+  },
 ];
 
-// Course Categories
+/* =========================================================
+   COURSES
+========================================================= */
+
 const COURSE_CATEGORIES = [
-  { icon: BarChart3, name: "Digital Marketing", color: "brand", desc: "SEO, Social Media, Content" },
-  { icon: TrendingUp, name: "SEO & Analytics", color: "brand", desc: "GEO, AEO, Data Analysis" },
-  { icon: Code, name: "Web Development", color: "brand", desc: "Full Stack, WordPress" },
-  { icon: Palette, name: "Graphic Design", color: "brand", desc: "Photoshop, Illustrator" },
-  { icon: Video, name: "Video Editing", color: "brand", desc: "Premiere Pro, After Effects" },
-  { icon: Target, name: "Paid Ads", color: "brand", desc: "Google Ads, Social Ads" }
+  {
+    icon: BarChart3,
+    name: 'Digital Marketing',
+    desc: 'SEO, Social Media, Content',
+  },
+  {
+    icon: TrendingUp,
+    name: 'SEO & Analytics',
+    desc: 'GEO, AEO, Data Analysis',
+  },
+  {
+    icon: Code,
+    name: 'Web Development',
+    desc: 'Full Stack, WordPress',
+  },
+  {
+    icon: Palette,
+    name: 'Graphic Design',
+    desc: 'Photoshop, Illustrator',
+  },
+  {
+    icon: Video,
+    name: 'Video Editing',
+    desc: 'Premiere Pro, After Effects',
+  },
+  {
+    icon: Target,
+    name: 'Paid Ads',
+    desc: 'Google Ads, Social Ads',
+  },
 ];
 
-// Achievements
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
 const ACHIEVEMENTS = [
-  { icon: Trophy, value: "500+", label: "Students Trained" },
-  { icon: Building2, value: "50+", label: "Partner Companies" },
-  { icon: Users, value: "100%", label: "Placement Support" },
-  { icon: BookMarked, value: "20+", label: "Live Projects" }
+  {
+    icon: Trophy,
+    value: '500+',
+    label: 'Students Trained',
+  },
+  {
+    icon: Building2,
+    value: '50+',
+    label: 'Partner Companies',
+  },
+  {
+    icon: Users,
+    value: '100%',
+    label: 'Placement Support',
+  },
+  {
+    icon: BookMarked,
+    value: '20+',
+    label: 'Live Projects',
+  },
 ];
 
-// Testimonials
+/* =========================================================
+   TESTIMONIALS
+========================================================= */
+
 const TESTIMONIALS = [
   {
-    name: "Rahul Sharma",
-    role: "Digital Marketing Alumnus",
-    quote: "IADE transformed my career. The practical training and expert mentors made all the difference.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+    name: 'Rahul Sharma',
+    role: 'Digital Marketing Alumnus',
+    quote:
+      'IADE transformed my career. The practical training and expert mentors made all the difference.',
+    image:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
   },
   {
-    name: "Priya Patel",
-    role: "Graphic Design Graduate",
-    quote: "The hands-on projects and industry exposure at IADE prepared me for real-world challenges.",
-    image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80"
+    name: 'Priya Patel',
+    role: 'Graphic Design Graduate',
+    quote:
+      'The hands-on projects and industry exposure at IADE prepared me for real-world challenges.',
+    image:
+      'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80',
   },
   {
-    name: "Amit Kumar",
-    role: "Full Stack Developer",
-    quote: "From zero to job-ready in 6 months. The mentorship and curriculum at IADE is unmatched.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80"
+    name: 'Amit Kumar',
+    role: 'Full Stack Developer',
+    quote:
+      'From zero to job-ready in 6 months. The mentorship and curriculum at IADE is unmatched.',
+    image:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
   },
   {
-    name: "Sneha Reddy",
-    role: "SEO Specialist",
-    quote: "The SEO training at IADE gave me practical skills that helped me land my dream job.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80"
-  }
+    name: 'Sneha Reddy',
+    role: 'SEO Specialist',
+    quote:
+      'The SEO training at IADE gave me practical skills that helped me land my dream job.',
+    image:
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
+  },
 ];
 
-// Why Choose Us
+/* =========================================================
+   WHY CHOOSE US
+========================================================= */
+
 const WHY_CHOOSE_US = [
-  { icon: Rocket, title: "Industry Experts", desc: "Learn from professionals with real-world experience" },
-  { icon: Target, title: "Practical Training", desc: "Hands-on projects and live client work" },
-  { icon: Shield, title: "100% Placement Support", desc: "Career guidance and job assistance" },
-  { icon: Award, title: "Certified Courses", desc: "Industry-recognized certifications" }
+  {
+    icon: Rocket,
+    title: 'Industry Experts',
+    desc: 'Learn from professionals with real-world experience.',
+  },
+  {
+    icon: Target,
+    title: 'Practical Training',
+    desc: 'Hands-on projects and live client work.',
+  },
+  {
+    icon: Shield,
+    title: 'Placement Support',
+    desc: 'Career guidance and job assistance.',
+  },
+  {
+    icon: Award,
+    title: 'Certified Courses',
+    desc: 'Industry-recognized certifications.',
+  },
 ];
 
-// What We Offer
+/* =========================================================
+   WHAT WE OFFER
+========================================================= */
+
 const WHAT_WE_OFFER = [
-  { icon: Laptop, title: "Live Projects", desc: "Work on real client campaigns" },
-  { icon: Users, title: "Expert Mentors", desc: "1-on-1 guidance from industry experts" },
-  { icon: Calendar, title: "Flexible Schedule", desc: "Weekend and evening batches available" },
-  { icon: Globe, title: "Online & Offline", desc: "Learn from anywhere" }
+  {
+    icon: Laptop,
+    title: 'Live Projects',
+    desc: 'Work on real client campaigns.',
+  },
+  {
+    icon: Users,
+    title: 'Expert Mentors',
+    desc: '1-on-1 guidance from industry experts.',
+  },
+  {
+    icon: Calendar,
+    title: 'Flexible Schedule',
+    desc: 'Weekend and evening batches available.',
+  },
+  {
+    icon: Globe,
+    title: 'Online & Offline',
+    desc: 'Learn from anywhere.',
+  },
 ];
+
+/* =========================================================
+   EXPERTISE ICONS
+========================================================= */
 
 const expertiseIcons = {
-  "SEO Strategy": TrendingUp,
-  "Content Marketing": Layers,
-  "Analytics": BarChart3,
-  "Google Ads": Target,
-  "Campaign Optimization": Zap,
-  "ROI Analysis": Shield,
-  "Photoshop": Palette,
-  "Visual Design": Layers,
-  "Brand Identity": Code,
-  "Illustration": Palette,
-  "Vector Art": Layers,
-  "Creative Direction": Target,
-  "WordPress": Code,
-  "React": Code,
-  "Full Stack Development": Layers,
-  "Career Guidance": Target,
-  "Academic Planning": Shield,
-  "Student Mentoring": Users
+  'SEO Strategy': TrendingUp,
+  'Content Marketing': Layers,
+  Analytics: BarChart3,
+  'Google Ads': Target,
+  'Campaign Optimization': Zap,
+  'ROI Analysis': Shield,
+  Photoshop: Palette,
+  'Visual Design': Layers,
+  'Brand Identity': Code,
+  Illustration: Palette,
+  'Vector Art': Layers,
+  'Creative Direction': Target,
+  WordPress: Code,
+  React: Code,
+  'Full Stack Development': Layers,
+  'Career Guidance': Target,
+  'Academic Planning': Shield,
+  'Student Mentoring': Users,
 };
+
+/* =========================================================
+   SOCIAL ICON
+========================================================= */
+
+const SocialIcon = ({ type }) => {
+  const icons = {
+    linkedin: Linkedin,
+    instagram: Instagram,
+    twitter: Twitter,
+    facebook: Facebook,
+    github: Github,
+  };
+
+  const Icon = icons[type];
+
+  if (!Icon) return null;
+
+  return (
+    <Icon className="h-4 w-4" strokeWidth={1.8} />
+  );
+};
+
+/* =========================================================
+   COMPONENT
+========================================================= */
 
 const Trainer = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   const sectionRefs = useRef([]);
   const observerRef = useRef(null);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  /* ---------------------------------------------------------
+     SCROLL TOP
+  --------------------------------------------------------- */
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 500);
+      setShowScrollTop(window.scrollY > 600);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
+
+  /* ---------------------------------------------------------
+     INTERSECTION OBSERVER
+  --------------------------------------------------------- */
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.dataset.index);
-            if (!isNaN(index)) setActiveIndex(index);
-            entry.target.classList.add('is-visible');
-            const children = entry.target.querySelectorAll('.stagger-item');
-            children.forEach((child, i) => {
-              setTimeout(() => {
-                child.classList.add('stagger-visible');
-              }, i * 100);
-            });
+          if (!entry.isIntersecting) return;
+
+          const index = Number(entry.target.dataset.index);
+
+          if (!Number.isNaN(index)) {
+            setActiveIndex(index);
           }
+
+          entry.target.classList.add('is-visible');
+
+          const children =
+            entry.target.querySelectorAll('.reveal-item');
+
+          children.forEach((child, childIndex) => {
+            setTimeout(() => {
+              child.classList.add('reveal-visible');
+            }, childIndex * 80);
+          });
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+      {
+        threshold: 0.12,
+        rootMargin: '0px 0px -80px 0px',
+      }
     );
 
-    sectionRefs.current.forEach((ref) => {
-      if (ref) observerRef.current.observe(ref);
+    sectionRefs.current.forEach((section) => {
+      if (section) {
+        observerRef.current.observe(section);
+      }
     });
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      observerRef.current?.disconnect();
     };
   }, []);
 
+  /* ---------------------------------------------------------
+     SCROLL TO TOP
+  --------------------------------------------------------- */
+
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
+
+  /* ---------------------------------------------------------
+     SCROLL TO SECTION
+  --------------------------------------------------------- */
 
   const scrollToSection = (index) => {
-    if (sectionRefs.current[index]) {
-      sectionRefs.current[index].scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
-      });
-    }
+    const section = sectionRefs.current[index];
+
+    if (!section) return;
+
+    section.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
   };
 
-  const getColorClasses = (color) => {
-    const colors = {
-      brand: {
-        bg: 'bg-brand/10',
-        border: 'border-brand/30',
-        text: 'text-brand',
-        hover: 'hover:border-brand/50 hover:shadow-brand/20',
-        glow: 'shadow-brand/20',
-        badge: 'bg-brand',
-        gradient: 'from-brand to-brandDark',
-        light: 'bg-brand/5',
-        ring: 'ring-brand/30'
-      }
-    };
-    return colors[color] || colors.brand;
-  };
+  /* =========================================================
+     RENDER
+  ========================================================= */
 
   return (
-    <main className="bg-ink text-paper selection:bg-brand selection:text-paper font-body overflow-x-hidden">
-      
+    <main className="min-h-screen overflow-x-hidden bg-ink font-body text-paper selection:bg-brand selection:text-paper">
+
+      {/* =====================================================
+          CUSTOM ANIMATIONS
+      ===================================================== */}
+
       <style>{`
-        @keyframes floatShape {
-          0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-          33% { transform: translateY(-20px) rotate(5deg) scale(1.05); }
-          66% { transform: translateY(10px) rotate(-5deg) scale(0.95); }
+        @keyframes heroReveal {
+          from {
+            opacity: 0;
+            transform: translateY(28px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.2); }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-16px);
+          }
         }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
+
+        @keyframes slowRotate {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-80px) rotate(-3deg); }
-          to { opacity: 1; transform: translateX(0) rotate(0); }
+
+        @keyframes marquee {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
         }
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(80px) rotate(3deg); }
-          to { opacity: 1; transform: translateX(0) rotate(0); }
-        }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes ripple {
-          0% { transform: scale(0.8); opacity: 1; }
-          100% { transform: scale(2); opacity: 0; }
-        }
-        @keyframes floatIcon {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-8px) scale(1.1); }
-        }
-        @keyframes spinSlow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes glitch {
-          0% { transform: translate(0); }
-          20% { transform: translate(-2px, 2px); }
-          40% { transform: translate(2px, -2px); }
-          60% { transform: translate(-1px, -1px); }
-          80% { transform: translate(1px, 2px); }
-          100% { transform: translate(0); }
-        }
-        @keyframes marqueeScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+
+        .hero-reveal {
+          opacity: 0;
+          animation: heroReveal 0.8s ease-out forwards;
         }
 
         .section-reveal {
           opacity: 0;
-          transform: translateY(60px);
-          transition: all 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+          transform: translateY(45px);
+          transition:
+            opacity 0.8s ease,
+            transform 0.8s cubic-bezier(.2,.8,.2,1);
         }
+
         .section-reveal.is-visible {
           opacity: 1;
           transform: translateY(0);
         }
 
-        .stagger-item {
+        .reveal-item {
           opacity: 0;
-          transform: translateY(30px);
-          transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+          transform: translateY(20px);
+          transition:
+            opacity 0.6s ease,
+            transform 0.6s cubic-bezier(.2,.8,.2,1);
         }
-        .stagger-item.stagger-visible {
+
+        .reveal-item.reveal-visible {
           opacity: 1;
           transform: translateY(0);
         }
 
-        .trainer-image-wrap {
+        .trainer-photo {
           opacity: 0;
-          transform: scale(0.9);
-          transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+          transform: scale(.96);
+          transition:
+            opacity .8s ease,
+            transform .8s cubic-bezier(.2,.8,.2,1);
         }
-        .is-visible .trainer-image-wrap {
+
+        .is-visible .trainer-photo {
           opacity: 1;
           transform: scale(1);
         }
 
-        .trainer-info-wrap {
+        .trainer-details {
           opacity: 0;
-          transform: translateX(30px);
-          transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
-          transition-delay: 0.3s;
+          transform: translateX(28px);
+          transition:
+            opacity .8s ease .15s,
+            transform .8s cubic-bezier(.2,.8,.2,1) .15s;
         }
-        .is-visible .trainer-info-wrap {
+
+        .is-visible .trainer-details {
           opacity: 1;
           transform: translateX(0);
         }
 
-        .card-scale {
-          opacity: 0;
-          transform: scale(0.8) rotate(-3deg);
-          transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .is-visible .card-scale {
-          opacity: 1;
-          transform: scale(1) rotate(0);
-        }
-        .card-scale:nth-child(1) { transition-delay: 0s; }
-        .card-scale:nth-child(2) { transition-delay: 0.1s; }
-        .card-scale:nth-child(3) { transition-delay: 0.2s; }
-        .card-scale:nth-child(4) { transition-delay: 0.3s; }
-
-        .card-flip {
-          opacity: 0;
-          transform: perspective(800px) rotateY(30deg) scale(0.9);
-          transition: all 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .is-visible .card-flip {
-          opacity: 1;
-          transform: perspective(800px) rotateY(0) scale(1);
-        }
-        .card-flip:nth-child(1) { transition-delay: 0s; }
-        .card-flip:nth-child(2) { transition-delay: 0.1s; }
-        .card-flip:nth-child(3) { transition-delay: 0.2s; }
-        .card-flip:nth-child(4) { transition-delay: 0.3s; }
-        .card-flip:nth-child(5) { transition-delay: 0.4s; }
-        .card-flip:nth-child(6) { transition-delay: 0.5s; }
-
-        .card-slide-up {
-          opacity: 0;
-          transform: translateY(50px);
-          transition: all 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .is-visible .card-slide-up {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .card-slide-up:nth-child(1) { transition-delay: 0s; }
-        .card-slide-up:nth-child(2) { transition-delay: 0.15s; }
-        .card-slide-up:nth-child(3) { transition-delay: 0.3s; }
-        .card-slide-up:nth-child(4) { transition-delay: 0.45s; }
-
-        .section-indicator .dot {
-          transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .section-indicator .dot:hover {
-          transform: scale(1.4);
-        }
-        .section-indicator .dot.active {
-          animation: pulseGlow 2s ease-in-out infinite;
-        }
-
-        .scroll-top-btn {
-          opacity: 0;
-          transform: translateY(20px) scale(0.8);
-          transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .scroll-top-btn.visible {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-
-        .parallax-shape {
-          transition: transform 0.1s ease-out;
-        }
-
         .marquee-track {
-          animation: marqueeScroll 30s linear infinite;
+          animation: marquee 32s linear infinite;
         }
+
         .marquee-track:hover {
           animation-play-state: paused;
         }
 
+        .floating-orb {
+          animation: float 8s ease-in-out infinite;
+        }
+
+        .rotate-slow {
+          animation: slowRotate 24s linear infinite;
+        }
+
         @media (max-width: 768px) {
-          .trainer-image-wrap,
-          .trainer-info-wrap {
+          .trainer-photo,
+          .trainer-details {
             opacity: 1;
             transform: none;
           }
         }
+
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+          }
+        }
       `}</style>
 
-      {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 sm:px-10 overflow-hidden" style={{ background: 'radial-gradient(ellipse at center, #1a1a1a 0%, #000000 100%)' }}>
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="parallax-shape absolute top-[-200px] right-[-100px] w-[500px] h-[500px] rounded-full bg-brand/10 animate-float"
-            style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }} />
-          <div className="parallax-shape absolute bottom-[-150px] left-[-80px] w-[400px] h-[400px] rounded-full bg-brand/5 animate-float"
-            style={{ animationDelay: '2s', transform: `translate(${mousePosition.x * -0.3}px, ${mousePosition.y * -0.3}px)` }} />
-          <div className="parallax-shape absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-brand/5 blur-3xl animate-pulse-glow"
-            style={{ transform: `translate(${mousePosition.x * 0.2 - 300}px, ${mousePosition.y * 0.2 - 300}px)` }} />
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
+      {/* =====================================================
+          HERO
+      ===================================================== */}
+
+      <section
+        className="relative flex min-h-[88vh] items-center overflow-hidden border-b border-white/[0.06] px-6 py-24 sm:px-10"
+        style={{
+          background:
+            'radial-gradient(circle at 70% 35%, rgba(200,16,46,.12), transparent 32%), radial-gradient(circle at 20% 80%, rgba(200,16,46,.06), transparent 28%), #050505',
+        }}
+      >
+        {/* Background grid */}
+
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px)',
+            backgroundSize: '72px 72px',
+          }}
+        />
+
+        {/* Glow */}
+
+        <div className="floating-orb absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-brand/[0.07] blur-3xl" />
+
+        <div
+          className="floating-orb absolute -bottom-48 -left-40 h-[480px] w-[480px] rounded-full bg-brand/[0.05] blur-3xl"
+          style={{ animationDelay: '2s' }}
+        />
+
+        {/* Decorative ring */}
+
+        <div className="rotate-slow pointer-events-none absolute right-[8%] top-[15%] hidden h-40 w-40 rounded-full border border-brand/10 lg:block">
+          <div className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 rounded-full bg-brand" />
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 mb-6 animate-[fadeInUp_0.6s_ease-out]">
-            <Sparkles className="w-3.5 h-3.5 text-brand animate-[spinSlow_4s_linear_infinite]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-brand font-semibold">Meet Our Expert Team</span>
+        <div className="relative z-10 mx-auto w-full max-w-6xl text-center">
+
+          <div className="hero-reveal inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/[0.07] px-4 py-2">
+            <Sparkles
+              className="h-4 w-4 text-brand"
+              strokeWidth={1.8}
+            />
+
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-brand sm:text-xs">
+              Meet Our Expert Team
+            </span>
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-black text-paper uppercase tracking-tight leading-[1.05]">
-            <span className="inline-block animate-[fadeInUp_0.8s_ease-out]">Our</span>
-            <span className="inline-block text-brand relative mx-2 animate-[fadeInUp_0.8s_ease-out_0.2s]">
-              <span className="relative inline-block hover:animate-[glitch_0.3s_ease-in-out]">
-                Expert
-                <span className="absolute -bottom-2 left-0 right-0 h-2 bg-brand/30 rounded-full -z-10" />
-              </span>
+          <h1
+            className="hero-reveal mt-7 font-display text-5xl font-black uppercase leading-[.95] tracking-[-0.04em] sm:text-6xl lg:text-8xl"
+            style={{ animationDelay: '120ms' }}
+          >
+            Learn From
+            <br />
+
+            <span className="text-brand">
+              Industry Experts
             </span>
-            <span className="inline-block animate-[fadeInUp_0.8s_ease-out_0.4s]">Trainers</span>
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-muted max-w-2xl mx-auto leading-relaxed animate-[fadeInUp_0.8s_ease-out_0.6s]">
-            Real‑world mentors with industry experience, dedicated to transforming 
-            careers through practical training and live project guidance.
+          <p
+            className="hero-reveal mx-auto mt-7 max-w-2xl text-sm leading-7 text-muted sm:text-base"
+            style={{ animationDelay: '240ms' }}
+          >
+            Meet the mentors behind IADE — experienced professionals
+            who bring practical knowledge, industry insights and
+            real-world project experience into every classroom.
           </p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-4 animate-[fadeInUp_0.8s_ease-out_0.8s]">
-            <Link to="/contact" className="group inline-flex items-center gap-2 px-8 py-3.5 bg-brand hover:bg-brandDark text-paper font-bold uppercase text-xs tracking-widest rounded-xl transition-all shadow-lg shadow-brand/20 hover:scale-105 hover:shadow-[0_0_40px_rgba(200,16,46,0.4)]">
-              <span>Meet Our Team</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          <div
+            className="hero-reveal mt-9 flex flex-wrap justify-center gap-3"
+            style={{ animationDelay: '360ms' }}
+          >
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-paper shadow-lg shadow-brand/20 transition-all duration-300 hover:-translate-y-1 hover:bg-brandDark hover:shadow-brand/30"
+            >
+              Talk To Our Team
+
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+              />
             </Link>
-            <button onClick={() => scrollToSection(1)} className="inline-flex items-center gap-2 px-8 py-3.5 bg-surface/50 backdrop-blur-sm border border-white/10 text-paper font-bold uppercase text-xs tracking-widest rounded-xl transition-all hover:bg-white/10 hover:scale-105">
-              <span>View Trainers</span>
-              <ChevronDown className="w-4 h-4 animate-bounce" />
+
+            <button
+              type="button"
+              onClick={() => scrollToSection(1)}
+              className="group inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.14em] text-paper backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:bg-white/[0.06]"
+            >
+              Explore Trainers
+
+              <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-1" />
             </button>
           </div>
 
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-[fadeInUp_1s_ease-out_1s] opacity-0 [animation-fill-mode:forwards]">
-            <div className="flex flex-col items-center gap-2 text-muted text-xs font-mono tracking-wider">
-              <span>Scroll to explore</span>
-              <div className="w-5 h-8 rounded-full border-2 border-white/20 flex justify-center p-1">
-                <div className="w-1 h-2 rounded-full bg-brand animate-[pulseGlow_2s_ease-in-out_infinite]" />
-              </div>
-            </div>
+          <div
+            className="hero-reveal mx-auto mt-14 flex max-w-xl items-center justify-center gap-5 text-muted"
+            style={{ animationDelay: '480ms' }}
+          >
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
+
+            <span className="font-mono text-[9px] uppercase tracking-[0.22em]">
+              Experience • Skills • Results
+            </span>
+
+            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
           </div>
         </div>
       </section>
 
-      {/* STATS */}
-      <section ref={(el) => (sectionRefs.current[0] = el)} data-index={0} className="section-reveal py-16 px-6 sm:px-10 border-y border-white/5 bg-surface/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+      {/* =====================================================
+          STATS
+      ===================================================== */}
+
+      <section
+        ref={(el) => (sectionRefs.current[0] = el)}
+        data-index="0"
+        className="section-reveal border-b border-white/[0.06] bg-surface/20 px-6 py-14 sm:px-10"
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] sm:grid-cols-4">
+
             {STATS.map((stat, index) => {
               const Icon = stat.icon;
+
               return (
-                <div key={index} className="card-scale group relative bg-surface/50 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10 text-center transition-all duration-500 hover:border-brand/40 hover:-translate-y-2 hover:shadow-xl">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="inline-flex p-3 rounded-full bg-brand/10 mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-6 h-6 text-brand" />
-                    </div>
-                    <p className="text-3xl sm:text-4xl font-display font-black text-paper group-hover:text-brand transition-colors duration-300">{stat.value}</p>
-                    <p className="text-xs sm:text-sm font-mono text-muted uppercase tracking-wider mt-1">{stat.label}</p>
+                <div
+                  key={index}
+                  className={`group relative p-6 text-center transition-colors duration-300 hover:bg-brand/[0.04] sm:p-8 ${
+                    index !== STATS.length - 1
+                      ? 'border-b border-white/[0.06] sm:border-b-0 sm:border-r'
+                      : ''
+                  } ${
+                    index === 0
+                      ? 'border-r'
+                      : ''
+                  }`}
+                >
+                  <Icon
+                    className="mx-auto mb-4 h-5 w-5 text-brand transition-transform duration-300 group-hover:scale-110"
+                    strokeWidth={1.7}
+                  />
+
+                  <div className="font-display text-3xl font-black tracking-tight text-paper sm:text-4xl">
+                    {stat.value}
+                  </div>
+
+                  <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-muted sm:text-[10px]">
+                    {stat.label}
                   </div>
                 </div>
               );
@@ -560,111 +786,207 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* TRAINERS */}
+      {/* =====================================================
+          TRAINERS
+      ===================================================== */}
+
       {TRAINERS.map((trainer, index) => {
-        const colors = getColorClasses(trainer.color);
         const sectionIndex = index + 1;
-        
+        const reverse = index % 2 !== 0;
+
         return (
-          <section key={trainer.id} ref={(el) => (sectionRefs.current[sectionIndex] = el)} data-index={sectionIndex} className="section-reveal min-h-screen flex items-center py-20 sm:py-28 px-6 sm:px-10 relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none">
-              <div className={`absolute top-[-200px] ${index % 2 === 0 ? 'right-[-150px]' : 'left-[-150px]'} w-[500px] h-[500px] rounded-full ${colors.light} animate-float`}
-                style={{ animationDuration: `${12 + index * 2}s` }} />
-              <div className={`absolute bottom-[-100px] ${index % 2 === 0 ? 'left-[-80px]' : 'right-[-80px]'} w-[300px] h-[300px] rounded-full ${colors.light} animate-float`}
-                style={{ animationDuration: `${14 + index * 2}s`, animationDelay: '3s' }} />
-              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full ${colors.light} blur-3xl opacity-30 animate-pulse-glow`} />
-              <div className={`absolute top-0 left-0 right-0 h-[2px] ${colors.bg} animate-shimmer`} />
-              <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${colors.bg} animate-shimmer`} style={{ animationDelay: '1.5s' }} />
-            </div>
+          <section
+            key={trainer.id}
+            ref={(el) => (sectionRefs.current[sectionIndex] = el)}
+            data-index={sectionIndex}
+            className="section-reveal relative overflow-hidden border-b border-white/[0.06] px-6 py-20 sm:px-10 sm:py-28"
+          >
+            {/* Background accent */}
 
-            <div className="relative z-10 w-full max-w-6xl mx-auto">
-              <div className={`grid lg:grid-cols-2 gap-10 lg:gap-16 items-center ${index % 2 === 0 ? '' : 'lg:direction-rtl'}`}>
-                <div className="trainer-image-wrap relative group">
-                  <div className={`absolute top-4 left-4 z-10 ${colors.badge} text-white w-12 h-12 rounded-full flex items-center justify-center font-mono font-bold text-lg shadow-xl border-2 border-paper`}>
-                    {String(trainer.id).padStart(2, '0')}
-                    <span className="absolute inset-0 rounded-full border-2 border-brand animate-[ripple_2s_ease-out_infinite]" />
-                  </div>
+            <div
+              className={`pointer-events-none absolute top-1/2 h-[480px] w-[480px] -translate-y-1/2 rounded-full bg-brand/[0.035] blur-3xl ${
+                reverse ? '-left-64' : '-right-64'
+              }`}
+            />
 
-                  <div className={`relative rounded-2xl overflow-hidden border-2 border-white/10 ${colors.hover} transition-all duration-500 shadow-2xl ${colors.glow}`}>
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent z-10" />
-                    <img src={trainer.image} alt={trainer.name} className="w-full h-[400px] sm:h-[480px] object-cover transition-transform duration-700 group-hover:scale-110" />
-                    <div className={`absolute bottom-6 right-6 z-10 px-4 py-2 rounded-full bg-paper/90 backdrop-blur-sm ${colors.text} font-mono text-xs font-bold uppercase tracking-wider shadow-lg border border-white/20 animate-[floatIcon_3s_ease-in-out_infinite]`}>
-                      {trainer.specialty}
+            <div className="relative z-10 mx-auto max-w-6xl">
+
+              <div
+                className={`grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16 ${
+                  reverse ? 'lg:[&>*:first-child]:order-2' : ''
+                }`}
+              >
+
+                {/* IMAGE */}
+
+                <div className="trainer-photo">
+                  <div className="relative mx-auto max-w-xl">
+
+                    {/* Number */}
+
+                    <div className="absolute -left-3 -top-3 z-20 flex h-11 w-11 items-center justify-center rounded-xl border border-brand/30 bg-ink font-mono text-xs font-bold text-brand shadow-xl shadow-black/30 sm:-left-4 sm:-top-4">
+                      {String(trainer.id).padStart(2, '0')}
                     </div>
 
-                    <div className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-gradient-to-t from-ink/95 via-ink/60 to-transparent flex items-end justify-center pb-10">
-                      <div className="flex gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        {trainer.social.linkedin && (
-                          <a href={trainer.social.linkedin} className="w-11 h-11 rounded-full bg-paper/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-paper hover:bg-brand hover:border-brand transition-all duration-300 hover:scale-110 hover:rotate-6">
-                            <Linkedin className="w-4 h-4" />
-                          </a>
-                        )}
-                        {trainer.social.instagram && (
-                          <a href={trainer.social.instagram} className="w-11 h-11 rounded-full bg-paper/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-paper hover:bg-brand hover:border-brand transition-all duration-300 hover:scale-110 hover:rotate-6">
-                            <Instagram className="w-4 h-4" />
-                          </a>
-                        )}
-                        {trainer.social.twitter && (
-                          <a href={trainer.social.twitter} className="w-11 h-11 rounded-full bg-paper/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-paper hover:bg-brand hover:border-brand transition-all duration-300 hover:scale-110 hover:rotate-6">
-                            <Twitter className="w-4 h-4" />
-                          </a>
-                        )}
-                        {trainer.social.facebook && (
-                          <a href={trainer.social.facebook} className="w-11 h-11 rounded-full bg-paper/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-paper hover:bg-brand hover:border-brand transition-all duration-300 hover:scale-110 hover:rotate-6">
-                            <Facebook className="w-4 h-4" />
-                          </a>
-                        )}
-                        {trainer.social.github && (
-                          <a href={trainer.social.github} className="w-11 h-11 rounded-full bg-paper/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-paper hover:bg-brand hover:border-brand transition-all duration-300 hover:scale-110 hover:rotate-6">
-                            <Github className="w-4 h-4" />
-                          </a>
+                    {/* Image */}
+
+                    <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-2xl shadow-black/40">
+
+                      <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
+
+                      <img
+                        src={trainer.image}
+                        alt={trainer.name}
+                        loading="lazy"
+                        className="h-[420px] w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04] sm:h-[520px]"
+                      />
+
+                      {/* Specialty */}
+
+                      <div className="absolute bottom-5 left-5 right-5 z-20 flex items-center justify-between gap-4">
+                        <div>
+                          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-white/50">
+                            Specialization
+                          </span>
+
+                          <p className="mt-1 text-sm font-semibold text-white">
+                            {trainer.specialty}
+                          </p>
+                        </div>
+
+                        <div className="hidden h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/30 backdrop-blur-md sm:flex">
+                          <ArrowRight className="h-4 w-4 text-white" />
+                        </div>
+                      </div>
+
+                      {/* Social */}
+
+                      <div className="absolute right-5 top-5 z-20 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100">
+                        {Object.entries(trainer.social).map(
+                          ([network, url]) => (
+                            <a
+                              key={network}
+                              href={url}
+                              onClick={(e) => {
+                                if (url === '#') {
+                                  e.preventDefault();
+                                }
+                              }}
+                              aria-label={network}
+                              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white backdrop-blur-md transition-all duration-300 hover:border-brand hover:bg-brand"
+                            >
+                              <SocialIcon type={network} />
+                            </a>
+                          )
                         )}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="trainer-info-wrap space-y-5">
-                  <div className="stagger-item inline-flex items-center gap-2 px-3 py-1 rounded-full bg-paper/5 border border-white/10">
-                    <span className={`w-1.5 h-1.5 rounded-full ${colors.text} animate-pulse`} />
-                    <span className={`text-xs font-mono uppercase tracking-wider ${colors.text} font-semibold`}>{trainer.specialty}</span>
+                {/* DETAILS */}
+
+                <div className="trainer-details">
+
+                  <div className="reveal-item mb-5 inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/[0.06] px-3 py-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+
+                    <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-brand">
+                      {trainer.specialty}
+                    </span>
                   </div>
 
-                  <h2 className="stagger-item text-3xl sm:text-4xl lg:text-5xl font-display font-black text-paper uppercase tracking-tight leading-[1.1]">{trainer.name}</h2>
-                  <p className={`stagger-item text-lg sm:text-xl font-semibold ${colors.text}`}>{trainer.role}</p>
+                  <h2 className="reveal-item font-display text-4xl font-black uppercase leading-none tracking-[-0.03em] text-paper sm:text-5xl lg:text-6xl">
+                    {trainer.name}
+                  </h2>
 
-                  <div className="stagger-item flex items-start gap-3 p-4 rounded-xl bg-surface/30 border border-white/5">
-                    <Quote className={`w-5 h-5 ${colors.text} shrink-0 mt-0.5 opacity-50`} />
-                    <p className="text-sm text-muted italic leading-relaxed">"{trainer.quote}"</p>
+                  <p className="reveal-item mt-3 text-base font-semibold text-brand sm:text-lg">
+                    {trainer.role}
+                  </p>
+
+                  {/* Quote */}
+
+                  <div className="reveal-item mt-7 border-l-2 border-brand/40 pl-5">
+                    <Quote
+                      className="mb-2 h-5 w-5 text-brand/60"
+                      strokeWidth={1.5}
+                    />
+
+                    <p className="max-w-xl text-sm italic leading-7 text-muted sm:text-[15px]">
+                      “{trainer.quote}”
+                    </p>
                   </div>
 
-                  <div className="stagger-item p-4 sm:p-5 rounded-xl bg-surface/50 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300">
-                    <div className="flex items-start gap-3">
-                      <GraduationCap className={`w-5 h-5 ${colors.text} shrink-0 mt-0.5`} />
+                  {/* Qualification */}
+
+                  <div className="reveal-item mt-7 rounded-xl border border-white/10 bg-white/[0.025] p-5 transition-colors duration-300 hover:border-white/15">
+                    <div className="flex gap-4">
+
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/[0.08]">
+                        <GraduationCap
+                          className="h-5 w-5 text-brand"
+                          strokeWidth={1.7}
+                        />
+                      </div>
+
                       <div>
-                        <span className="text-xs font-mono uppercase tracking-wider text-muted">Qualification</span>
-                        <p className="text-sm text-paper/90 leading-relaxed">{trainer.qualification}</p>
+                        <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted">
+                          Qualification
+                        </span>
+
+                        <p className="mt-1 text-sm leading-6 text-paper/80">
+                          {trainer.qualification}
+                        </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="stagger-item flex flex-wrap gap-2">
-                    {trainer.expertise.map((skill, i) => {
-                      const Icon = expertiseIcons[skill] || Zap;
-                      return (
-                        <span key={i} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full ${colors.bg} ${colors.border} border text-xs font-medium ${colors.text}`}>
-                          <Icon className="w-3 h-3" />
-                          {skill}
-                        </span>
-                      );
-                    })}
+                  {/* Expertise */}
+
+                  <div className="reveal-item mt-6">
+
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-muted">
+                      Areas of Expertise
+                    </span>
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {trainer.expertise.map((skill) => {
+                        const Icon =
+                          expertiseIcons[skill] || Zap;
+
+                        return (
+                          <span
+                            key={skill}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.025] px-3 py-2 text-[11px] font-medium text-paper/70 transition-all duration-300 hover:border-brand/30 hover:bg-brand/[0.05] hover:text-brand"
+                          >
+                            <Icon
+                              className="h-3 w-3 text-brand"
+                              strokeWidth={1.8}
+                            />
+
+                            {skill}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  <div className="stagger-item flex flex-wrap items-center gap-4 pt-2">
-                    <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${colors.bg} ${colors.border} border`}>
-                      <Briefcase className={`w-4 h-4 ${colors.text}`} />
-                      <span className="text-xs font-mono font-bold uppercase tracking-wider">{trainer.experience} Experience</span>
-                    </div>
+                  {/* Experience */}
+
+                  <div className="reveal-item mt-7 flex items-center gap-3 border-t border-white/[0.07] pt-6">
+
+                    <Briefcase
+                      className="h-4 w-4 text-brand"
+                      strokeWidth={1.7}
+                    />
+
+                    <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted">
+                      Industry Experience
+                    </span>
+
+                    <span className="text-sm font-semibold text-paper">
+                      {trainer.experience}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -673,33 +995,73 @@ const Trainer = () => {
         );
       })}
 
-      {/* COURSES */}
-      <section ref={(el) => (sectionRefs.current[TRAINERS.length + 1] = el)} data-index={TRAINERS.length + 1} className="section-reveal py-20 px-6 sm:px-10 border-y border-white/5 bg-surface/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 mb-4">
-              <BookOpen className="w-3.5 h-3.5 text-brand" />
-              <span className="text-xs font-mono uppercase tracking-widest text-brand font-semibold">Our Courses</span>
+      {/* =====================================================
+          COURSES
+      ===================================================== */}
+
+      <section
+        ref={(el) =>
+          (sectionRefs.current[TRAINERS.length + 1] = el)
+        }
+        data-index={TRAINERS.length + 1}
+        className="section-reveal border-b border-white/[0.06] bg-surface/20 px-6 py-20 sm:px-10 sm:py-28"
+      >
+        <div className="mx-auto max-w-6xl">
+
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/[0.06] px-3 py-1.5">
+              <BookOpen
+                className="h-3.5 w-3.5 text-brand"
+                strokeWidth={1.7}
+              />
+
+              <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-brand">
+                Our Courses
+              </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-paper uppercase tracking-tight">
-              What We <span className="text-brand">Teach</span>
+
+            <h2 className="mt-5 font-display text-4xl font-black uppercase tracking-[-0.03em] text-paper sm:text-5xl">
+              Skills That
+              <span className="text-brand"> Matter</span>
             </h2>
-            <p className="mt-3 text-muted max-w-2xl mx-auto">Industry-aligned courses designed to make you job-ready</p>
+
+            <p className="mt-4 text-sm leading-6 text-muted">
+              Industry-aligned programs built around practical skills,
+              modern tools and career-focused learning.
+            </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COURSE_CATEGORIES.map((course, index) => {
-              const colors = getColorClasses(course.color);
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+            {COURSE_CATEGORIES.map((course) => {
               const Icon = course.icon;
+
               return (
-                <div key={index} className="card-flip group relative bg-surface/50 backdrop-blur-sm p-8 rounded-2xl border border-white/10 text-center transition-all duration-500 hover:border-brand/40 hover:-translate-y-3 hover:shadow-xl">
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${colors.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                  <div className="relative z-10">
-                    <div className={`inline-flex p-4 rounded-full ${colors.bg} mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className={`w-8 h-8 ${colors.text}`} />
+                <div
+                  key={course.name}
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:bg-brand/[0.035]"
+                >
+                  <div className="relative z-10 flex items-start gap-5">
+
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-brand/15 bg-brand/[0.07]">
+                      <Icon
+                        className="h-5 w-5 text-brand"
+                        strokeWidth={1.7}
+                      />
                     </div>
-                    <h3 className="text-lg font-display font-bold text-paper uppercase tracking-tight group-hover:text-brand transition-colors">{course.name}</h3>
-                    <p className="text-sm text-muted mt-2">{course.desc}</p>
+
+                    <div>
+                      <h3 className="font-display text-lg font-bold text-paper">
+                        {course.name}
+                      </h3>
+
+                      <p className="mt-1 text-xs leading-5 text-muted">
+                        {course.desc}
+                      </p>
+                    </div>
+
+                    <ArrowRight className="ml-auto mt-1 h-4 w-4 text-white/20 transition-all duration-300 group-hover:translate-x-1 group-hover:text-brand" />
                   </div>
                 </div>
               );
@@ -708,30 +1070,68 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* ACHIEVEMENTS */}
-      <section ref={(el) => (sectionRefs.current[TRAINERS.length + 2] = el)} data-index={TRAINERS.length + 2} className="section-reveal py-20 px-6 sm:px-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 mb-4">
-              <Trophy className="w-3.5 h-3.5 text-brand" />
-              <span className="text-xs font-mono uppercase tracking-widest text-brand font-semibold">Our Achievements</span>
+      {/* =====================================================
+          ACHIEVEMENTS
+      ===================================================== */}
+
+      <section
+        ref={(el) =>
+          (sectionRefs.current[TRAINERS.length + 2] = el)
+        }
+        data-index={TRAINERS.length + 2}
+        className="section-reveal px-6 py-20 sm:px-10 sm:py-28"
+      >
+        <div className="mx-auto max-w-6xl">
+
+          <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+
+            <div>
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-brand">
+                Our Achievements
+              </span>
+
+              <h2 className="mt-3 font-display text-4xl font-black uppercase tracking-[-0.03em] text-paper sm:text-5xl">
+                Built Around
+                <span className="text-brand"> Results</span>
+              </h2>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-paper uppercase tracking-tight">
-              Making <span className="text-brand">Impact</span>
-            </h2>
+
+            <p className="max-w-md text-sm leading-6 text-muted">
+              Our focus is simple — practical learning, measurable
+              growth and stronger career opportunities.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] sm:grid-cols-4">
+
             {ACHIEVEMENTS.map((item, index) => {
               const Icon = item.icon;
+
               return (
-                <div key={index} className="card-scale group relative bg-surface/50 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10 text-center transition-all duration-500 hover:border-brand/40 hover:-translate-y-2 hover:shadow-xl">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <Icon className="w-8 h-8 text-brand mx-auto mb-3 group-hover:scale-110 transition-transform duration-300" />
-                    <p className="text-2xl sm:text-3xl font-display font-black text-paper group-hover:text-brand transition-colors">{item.value}</p>
-                    <p className="text-xs font-mono text-muted uppercase tracking-wider mt-1">{item.label}</p>
+                <div
+                  key={item.label}
+                  className={`group p-6 sm:p-8 ${
+                    index !== ACHIEVEMENTS.length - 1
+                      ? 'border-b border-white/[0.06] sm:border-b-0 sm:border-r'
+                      : ''
+                  } ${
+                    index === 0
+                      ? 'border-r'
+                      : ''
+                  }`}
+                >
+                  <Icon
+                    className="h-6 w-6 text-brand transition-transform duration-300 group-hover:scale-110"
+                    strokeWidth={1.6}
+                  />
+
+                  <div className="mt-5 font-display text-3xl font-black text-paper sm:text-4xl">
+                    {item.value}
                   </div>
+
+                  <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.15em] text-muted">
+                    {item.label}
+                  </p>
                 </div>
               );
             })}
@@ -739,32 +1139,55 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* WHY CHOOSE US */}
-      <section ref={(el) => (sectionRefs.current[TRAINERS.length + 3] = el)} data-index={TRAINERS.length + 3} className="section-reveal py-20 px-6 sm:px-10 border-y border-white/5 bg-surface/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 mb-4">
-              <Shield className="w-3.5 h-3.5 text-brand" />
-              <span className="text-xs font-mono uppercase tracking-widest text-brand font-semibold">Why Choose Us</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-paper uppercase tracking-tight">
-              Why <span className="text-brand">IADE</span> Stands Out
+      {/* =====================================================
+          WHY IADE
+      ===================================================== */}
+
+      <section
+        ref={(el) =>
+          (sectionRefs.current[TRAINERS.length + 3] = el)
+        }
+        data-index={TRAINERS.length + 3}
+        className="section-reveal border-y border-white/[0.06] bg-surface/20 px-6 py-20 sm:px-10 sm:py-28"
+      >
+        <div className="mx-auto max-w-6xl">
+
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-brand">
+              Why Choose IADE
+            </span>
+
+            <h2 className="mt-3 font-display text-4xl font-black uppercase tracking-[-0.03em] text-paper sm:text-5xl">
+              More Than
+              <span className="text-brand"> Training</span>
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {WHY_CHOOSE_US.map((item, index) => {
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+            {WHY_CHOOSE_US.map((item) => {
               const Icon = item.icon;
+
               return (
-                <div key={index} className="card-slide-up group relative bg-surface/50 backdrop-blur-sm p-8 rounded-2xl border border-white/10 transition-all duration-500 hover:border-brand/40 hover:-translate-y-3 hover:shadow-xl">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="inline-flex p-3 rounded-full bg-brand/10 mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-6 h-6 text-brand" />
-                    </div>
-                    <h3 className="text-lg font-display font-bold text-paper group-hover:text-brand transition-colors">{item.title}</h3>
-                    <p className="text-sm text-muted mt-2">{item.desc}</p>
+                <div
+                  key={item.title}
+                  className="group rounded-2xl border border-white/10 bg-white/[0.025] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/[0.07]">
+                    <Icon
+                      className="h-5 w-5 text-brand"
+                      strokeWidth={1.7}
+                    />
                   </div>
+
+                  <h3 className="mt-6 font-display text-lg font-bold text-paper transition-colors group-hover:text-brand">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    {item.desc}
+                  </p>
                 </div>
               );
             })}
@@ -772,32 +1195,58 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* WHAT WE OFFER */}
-      <section ref={(el) => (sectionRefs.current[TRAINERS.length + 4] = el)} data-index={TRAINERS.length + 4} className="section-reveal py-20 px-6 sm:px-10">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 mb-4">
-              <Rocket className="w-3.5 h-3.5 text-brand" />
-              <span className="text-xs font-mono uppercase tracking-widest text-brand font-semibold">What We Offer</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-paper uppercase tracking-tight">
-              Everything You <span className="text-brand">Need</span>
+      {/* =====================================================
+          WHAT WE OFFER
+      ===================================================== */}
+
+      <section
+        ref={(el) =>
+          (sectionRefs.current[TRAINERS.length + 4] = el)
+        }
+        data-index={TRAINERS.length + 4}
+        className="section-reveal px-6 py-20 sm:px-10 sm:py-28"
+      >
+        <div className="mx-auto max-w-6xl">
+
+          <div className="mb-12">
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-brand">
+              Student Experience
+            </span>
+
+            <h2 className="mt-3 font-display text-4xl font-black uppercase tracking-[-0.03em] text-paper sm:text-5xl">
+              Everything You
+              <span className="text-brand"> Need</span>
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
             {WHAT_WE_OFFER.map((item, index) => {
               const Icon = item.icon;
+
               return (
-                <div key={index} className="card-flip group relative bg-surface/50 backdrop-blur-sm p-8 rounded-2xl border border-white/10 text-center transition-all duration-500 hover:border-brand/40 hover:-translate-y-3 hover:shadow-xl">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="inline-flex p-3 rounded-full bg-brand/10 mb-4 group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-6 h-6 text-brand" />
-                    </div>
-                    <h3 className="text-lg font-display font-bold text-paper group-hover:text-brand transition-colors">{item.title}</h3>
-                    <p className="text-sm text-muted mt-2">{item.desc}</p>
+                <div
+                  key={item.title}
+                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30"
+                >
+                  <span className="font-mono text-[9px] text-white/20">
+                    0{index + 1}
+                  </span>
+
+                  <div className="mt-6 flex h-11 w-11 items-center justify-center rounded-xl bg-brand/[0.07]">
+                    <Icon
+                      className="h-5 w-5 text-brand"
+                      strokeWidth={1.7}
+                    />
                   </div>
+
+                  <h3 className="mt-6 font-display text-lg font-bold text-paper group-hover:text-brand">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-6 text-muted">
+                    {item.desc}
+                  </p>
                 </div>
               );
             })}
@@ -805,29 +1254,69 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section ref={(el) => (sectionRefs.current[TRAINERS.length + 5] = el)} data-index={TRAINERS.length + 5} className="section-reveal py-20 px-6 sm:px-10 border-y border-white/5 bg-surface/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 border border-brand/20 mb-4">
-              <Star className="w-3.5 h-3.5 text-brand" />
-              <span className="text-xs font-mono uppercase tracking-widest text-brand font-semibold">Student Reviews</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-paper uppercase tracking-tight">
-              What Our <span className="text-brand">Students Say</span>
+      {/* =====================================================
+          TESTIMONIALS
+      ===================================================== */}
+
+      <section
+        ref={(el) =>
+          (sectionRefs.current[TRAINERS.length + 5] = el)
+        }
+        data-index={TRAINERS.length + 5}
+        className="section-reveal border-y border-white/[0.06] bg-surface/20 px-6 py-20 sm:px-10 sm:py-28"
+      >
+        <div className="mx-auto max-w-6xl">
+
+          <div className="mx-auto mb-12 max-w-2xl text-center">
+
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-brand">
+              Student Reviews
+            </span>
+
+            <h2 className="mt-3 font-display text-4xl font-black uppercase tracking-[-0.03em] text-paper sm:text-5xl">
+              Voices of Our
+              <span className="text-brand"> Students</span>
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {TESTIMONIALS.map((testimonial, index) => (
-              <div key={index} className="card-slide-up group relative bg-surface/50 backdrop-blur-sm p-8 rounded-2xl border border-white/10 transition-all duration-500 hover:border-brand/40 hover:-translate-y-2 hover:shadow-xl">
-                <Quote className="w-8 h-8 text-brand/30 mb-4" />
-                <p className="text-sm text-paper/90 leading-relaxed italic">"{testimonial.quote}"</p>
-                <div className="mt-6 pt-6 border-t border-white/10 flex items-center gap-4">
-                  <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover border-2 border-brand/30" />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+            {TESTIMONIALS.map((testimonial) => (
+              <div
+                key={testimonial.name}
+                className="group rounded-2xl border border-white/10 bg-white/[0.025] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand/30"
+              >
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, index) => (
+                    <Star
+                      key={index}
+                      className="h-3.5 w-3.5 fill-brand text-brand"
+                      strokeWidth={1.5}
+                    />
+                  ))}
+                </div>
+
+                <p className="mt-5 text-sm leading-7 text-paper/75">
+                  “{testimonial.quote}”
+                </p>
+
+                <div className="mt-7 flex items-center gap-3 border-t border-white/[0.07] pt-5">
+
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    loading="lazy"
+                    className="h-10 w-10 rounded-full border border-brand/20 object-cover"
+                  />
+
                   <div>
-                    <h4 className="font-display font-bold text-paper text-sm">{testimonial.name}</h4>
-                    <p className="text-xs text-muted">{testimonial.role}</p>
+                    <h4 className="text-sm font-semibold text-paper">
+                      {testimonial.name}
+                    </h4>
+
+                    <p className="mt-0.5 text-[10px] text-muted">
+                      {testimonial.role}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -836,19 +1325,41 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* MARQUEE */}
-      <section className="py-6 border-y border-white/5 bg-surface/30 overflow-hidden">
+      {/* =====================================================
+          TRAINER MARQUEE
+      ===================================================== */}
+
+      <section className="overflow-hidden border-b border-white/[0.06] bg-black/20 py-5">
+
         <div className="marquee-track flex w-max">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex items-center gap-12 px-6">
+
+          {[...Array(2)].map((_, groupIndex) => (
+            <div
+              key={groupIndex}
+              className="flex items-center"
+            >
               {TRAINERS.map((trainer) => (
-                <div key={trainer.id} className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-brand/30">
-                    <img src={trainer.image} alt={trainer.name} className="w-full h-full object-cover" />
+                <div
+                  key={`${groupIndex}-${trainer.id}`}
+                  className="mx-8 flex items-center gap-3 sm:mx-12"
+                >
+                  <div className="h-8 w-8 overflow-hidden rounded-full border border-brand/20">
+                    <img
+                      src={trainer.image}
+                      alt={trainer.name}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
                   </div>
-                  <div className="text-left">
-                    <p className="text-sm font-bold text-paper">{trainer.name}</p>
-                    <p className="text-xs text-muted">{trainer.role}</p>
+
+                  <div>
+                    <p className="whitespace-nowrap text-xs font-semibold text-paper">
+                      {trainer.name}
+                    </p>
+
+                    <p className="whitespace-nowrap font-mono text-[8px] uppercase tracking-wider text-muted">
+                      {trainer.role}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -857,71 +1368,54 @@ const Trainer = () => {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative px-6 sm:px-10 py-20 max-w-6xl mx-auto">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-brand/20 rounded-full blur-[120px] animate-pulse-glow" />
-        </div>
+      {/* =====================================================
+          CTA
+      ===================================================== */}
 
-        <div className="relative z-10 bg-gradient-to-br from-brand via-brandDark to-ink rounded-3xl p-8 sm:p-12 text-center border border-white/10 shadow-2xl shadow-brand/10 overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" style={{ animationDelay: '1.5s' }} />
-            <div className="absolute -top-1/2 -right-1/2 w-1/2 h-1/2 bg-white/5 rounded-full blur-3xl animate-[spinSlow_20s_linear_infinite]" />
-          </div>
+      <EnrollCTA />
 
-          <div className="relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 mb-4">
-              <Zap className="w-3.5 h-3.5 text-[#FF7A70] animate-pulse" />
-              <span className="text-xs font-mono uppercase tracking-widest text-white/80">Limited Seats Available</span>
-            </div>
+      {/* =====================================================
+          SCROLL TO TOP
+      ===================================================== */}
 
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black text-paper uppercase tracking-tight">
-              Ready to Learn from <span className="text-[#FF7A70]">Industry Experts</span>?
-            </h2>
-            <p className="mt-3 text-paper/80 max-w-lg mx-auto text-sm sm:text-base">
-              Join IADE and get mentored by professionals who have real-world experience in their fields.
-            </p>
-            
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/contact" className="group inline-flex items-center gap-2 px-8 py-3.5 bg-paper text-ink font-bold uppercase text-xs tracking-widest rounded-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]">
-                <span>Enroll Now</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-3.5 bg-white/10 backdrop-blur-sm border border-white/20 text-paper font-bold uppercase text-xs tracking-widest rounded-xl transition-all hover:bg-white/20 hover:scale-105">
-                <Phone className="w-4 h-4" />
-                <span>Book Free Demo</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SCROLL TO TOP */}
       <button
+        type="button"
         onClick={scrollToTop}
-        className={`scroll-top-btn fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-brand hover:bg-brandDark text-paper shadow-lg shadow-brand/30 transition-all duration-300 hover:scale-110 flex items-center justify-center ${showScrollTop ? 'visible' : ''}`}
         aria-label="Scroll to top"
+        className={`fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-brand text-paper shadow-xl shadow-brand/20 transition-all duration-300 hover:-translate-y-1 hover:bg-brandDark ${
+          showScrollTop
+            ? 'translate-y-0 opacity-100'
+            : 'pointer-events-none translate-y-5 opacity-0'
+        }`}
       >
-        <ArrowUp className="w-5 h-5" />
+        <ArrowUp
+          className="h-4 w-4"
+          strokeWidth={2}
+        />
       </button>
 
-      {/* SECTION INDICATOR */}
-      <div className="section-indicator fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-2.5">
-        {[...Array(TRAINERS.length + 6)].map((_, index) => (
+      {/* =====================================================
+          SECTION INDICATOR
+      ===================================================== */}
+
+      <div className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 lg:flex lg:flex-col lg:gap-2">
+
+        {Array.from({
+          length: TRAINERS.length + 6,
+        }).map((_, index) => (
           <button
             key={index}
+            type="button"
             onClick={() => scrollToSection(index)}
-            className={`dot w-3 h-3 rounded-full transition-all duration-300 ${
-              activeIndex === index 
-                ? 'bg-brand scale-125 shadow-[0_0_20px_rgba(200,16,46,0.5)] active' 
-                : 'bg-surface/50 hover:bg-brand/50'
-            }`}
             aria-label={`Go to section ${index + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              activeIndex === index
+                ? 'w-5 bg-brand shadow-[0_0_12px_rgba(200,16,46,.5)]'
+                : 'w-1.5 bg-white/20 hover:bg-brand/60'
+            }`}
           />
         ))}
       </div>
-
     </main>
   );
 };

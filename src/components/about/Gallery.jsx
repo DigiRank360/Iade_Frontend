@@ -1,104 +1,207 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Images, 
-  Users, 
-  Award, 
-  Calendar, 
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Images,
+  Users,
+  Award,
+  Calendar,
   X,
   ChevronLeft,
   ChevronRight,
-  Grid3x3,
+  Grid3X3,
   LayoutGrid,
-  Image,
+  Image as ImageIcon,
   Star,
   ZoomIn,
   ArrowUp,
+  Sparkles,
+  MoveUpRight,
 } from 'lucide-react';
 
-// NOTE: The Claude artifact sandbox blocks hotlinking to external image
-// hosts (picsum.photos, images.unsplash.com, etc.) — that's why nothing
-// was rendering. To guarantee images always show with zero network
-// dependency, each image is generated on the fly as an inline SVG data
-// URI (gradient background + icon + label), keyed by category below.
-const CATEGORY_THEME = {
-  classroom:   { colors: ['#1e3a5f', '#2563eb'], icon: 'classroom' },
-  celebration: { colors: ['#5b3a00', '#eab308'], icon: 'celebration' },
-  certificate: { colors: ['#0f3d1f', '#22c55e'], icon: 'certificate' },
-};
-
-const ICON_PATHS = {
-  classroom: '<path d="M20 90 L100 40 L180 90 L100 130 Z" fill="none" stroke="white" stroke-width="4" stroke-opacity="0.85"/><path d="M60 105 L60 145 Q100 165 140 145 L140 105" fill="none" stroke="white" stroke-width="4" stroke-opacity="0.85"/><line x1="180" y1="90" x2="180" y2="130" stroke="white" stroke-width="4" stroke-opacity="0.85"/>',
-  celebration: '<path d="M100 40 L112 75 L150 75 L120 97 L131 133 L100 111 L69 133 L80 97 L50 75 L88 75 Z" fill="white" fill-opacity="0.85"/>',
-  certificate: '<rect x="55" y="45" width="90" height="70" rx="4" fill="none" stroke="white" stroke-width="4" stroke-opacity="0.85"/><line x1="70" y1="65" x2="130" y2="65" stroke="white" stroke-width="3" stroke-opacity="0.7"/><line x1="70" y1="80" x2="115" y2="80" stroke="white" stroke-width="3" stroke-opacity="0.7"/><circle cx="100" cy="130" r="14" fill="none" stroke="white" stroke-width="4" stroke-opacity="0.85"/><path d="M92 142 L88 160 L100 152 L112 160 L108 142" fill="white" fill-opacity="0.85"/>',
-};
-
-const makeImage = (category, seed, label) => {
-  const theme = CATEGORY_THEME[category];
-  const icon = ICON_PATHS[category];
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 200 133">
-    <defs>
-      <linearGradient id="g${seed}" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="${theme.colors[0]}"/>
-        <stop offset="100%" stop-color="${theme.colors[1]}"/>
-      </linearGradient>
-      <pattern id="p${seed}" width="20" height="20" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1" fill="white" fill-opacity="0.06"/>
-      </pattern>
-    </defs>
-    <rect width="200" height="133" fill="url(#g${seed})"/>
-    <rect width="200" height="133" fill="url(#p${seed})"/>
-    ${icon}
-    <text x="100" y="118" font-family="Arial, sans-serif" font-size="9" fill="white" fill-opacity="0.75" text-anchor="middle" letter-spacing="0.5">${label}</text>
-  </svg>`;
-  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-};
-
-// Gallery Images Data — every image is a locally-generated SVG (no external
-// network calls at all), so they render instantly and can never fail to load.
 const GALLERY_IMAGES = [
-  // Classroom Images
-  { src: makeImage('classroom', 1, 'CLASSROOM'), category: 'classroom', title: 'Interactive Classroom Session', date: 'Jan 2025' },
-  { src: makeImage('classroom', 2, 'WORKSHOP'), category: 'classroom', title: 'Digital Marketing Workshop', date: 'Dec 2024' },
-  { src: makeImage('classroom', 3, 'TRAINING'), category: 'classroom', title: 'Practical Training Session', date: 'Nov 2024' },
-  { src: makeImage('classroom', 4, 'DISCUSSION'), category: 'classroom', title: 'Group Discussion', date: 'Oct 2024' },
-
-  // Celebration Images
-  { src: makeImage('celebration', 5, 'GRADUATION'), category: 'celebration', title: 'Batch Graduation Ceremony', date: 'Sep 2024' },
-  { src: makeImage('celebration', 6, 'SUCCESS'), category: 'celebration', title: 'Success Celebration', date: 'Aug 2024' },
-  { src: makeImage('celebration', 7, 'FESTIVAL'), category: 'celebration', title: 'Festival Celebration', date: 'Jul 2024' },
-  { src: makeImage('celebration', 8, 'AWARDS'), category: 'celebration', title: 'Award Ceremony', date: 'Jun 2024' },
-
-  // Certificate Images
-  { src: makeImage('certificate', 9, 'CERTIFICATE'), category: 'certificate', title: 'Certificate Distribution', date: 'May 2024' },
-  { src: makeImage('certificate', 10, 'ACHIEVEMENT'), category: 'certificate', title: 'Achievement Recognition', date: 'Apr 2024' },
-  { src: makeImage('certificate', 11, 'COMPLETION'), category: 'certificate', title: 'Course Completion', date: 'Mar 2024' },
-  { src: makeImage('certificate', 12, 'SKILL CERT'), category: 'certificate', title: 'Skill Certification', date: 'Feb 2024' },
-
-  // More images for variety
-  { src: makeImage('classroom', 13, 'WORKSHOP'), category: 'classroom', title: 'Workshop Session', date: 'Dec 2024' },
-  { src: makeImage('celebration', 14, 'BATCH PARTY'), category: 'celebration', title: 'Batch Party', date: 'Nov 2024' },
-  { src: makeImage('certificate', 15, 'AWARDS'), category: 'certificate', title: 'Award Distribution', date: 'Oct 2024' },
+  {
+    id: 1,
+    src: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=85',
+    category: 'classroom',
+    title: 'Interactive Classroom Session',
+    date: 'January 2025',
+    tag: 'Learning',
+  },
+  {
+    id: 2,
+    src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=85',
+    category: 'classroom',
+    title: 'Digital Marketing Training',
+    date: 'December 2024',
+    tag: 'Training',
+  },
+  {
+    id: 3,
+    src: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1400&q=85',
+    category: 'classroom',
+    title: 'Group Discussion',
+    date: 'November 2024',
+    tag: 'Workshop',
+  },
+  {
+    id: 4,
+    src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1400&q=85',
+    category: 'classroom',
+    title: 'Practical Learning Session',
+    date: 'October 2024',
+    tag: 'Practical',
+  },
+  {
+    id: 5,
+    src: 'https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1400&q=85',
+    category: 'celebration',
+    title: 'Student Success Celebration',
+    date: 'September 2024',
+    tag: 'Celebration',
+  },
+  {
+    id: 6,
+    src: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1400&q=85',
+    category: 'celebration',
+    title: 'Batch Celebration',
+    date: 'August 2024',
+    tag: 'Students',
+  },
+  {
+    id: 7,
+    src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=85',
+    category: 'celebration',
+    title: 'Student Community',
+    date: 'July 2024',
+    tag: 'Community',
+  },
+  {
+    id: 8,
+    src: 'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1400&q=85',
+    category: 'celebration',
+    title: 'Annual Student Meet',
+    date: 'June 2024',
+    tag: 'Event',
+  },
+  {
+    id: 9,
+    src: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1400&q=85',
+    category: 'certificate',
+    title: 'Certificate Distribution',
+    date: 'May 2024',
+    tag: 'Achievement',
+  },
+  {
+    id: 10,
+    src: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1400&q=85',
+    category: 'certificate',
+    title: 'Student Achievement',
+    date: 'April 2024',
+    tag: 'Recognition',
+  },
+  {
+    id: 11,
+    src: 'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&w=1400&q=85',
+    category: 'certificate',
+    title: 'Course Completion Ceremony',
+    date: 'March 2024',
+    tag: 'Certification',
+  },
+  {
+    id: 12,
+    src: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1400&q=85',
+    category: 'certificate',
+    title: 'Skill Certification',
+    date: 'February 2024',
+    tag: 'Skills',
+  },
+  {
+    id: 13,
+    src: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1400&q=85',
+    category: 'classroom',
+    title: 'Live Workshop',
+    date: 'January 2024',
+    tag: 'Workshop',
+  },
+  {
+    id: 14,
+    src: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1400&q=85',
+    category: 'celebration',
+    title: 'Batch Party',
+    date: 'December 2023',
+    tag: 'Celebration',
+  },
+  {
+    id: 15,
+    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1400&q=85',
+    category: 'certificate',
+    title: 'Award Distribution',
+    date: 'November 2023',
+    tag: 'Awards',
+  },
+  {
+    id: 16,
+    src: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1400&q=85',
+    category: 'classroom',
+    title: 'Creative Learning Environment',
+    date: 'October 2023',
+    tag: 'Learning',
+  },
 ];
 
-// Stats Data
 const STATS = [
-  { icon: Images, value: "85+", label: "Photos" },
-  { icon: Users, value: "12", label: "Batches" },
-  { icon: Award, value: "500+", label: "Students" },
-  { icon: Calendar, value: "4", label: "Years" }
+  {
+    icon: Images,
+    value: '85+',
+    label: 'Photos',
+  },
+  {
+    icon: Users,
+    value: '12',
+    label: 'Batches',
+  },
+  {
+    icon: Award,
+    value: '500+',
+    label: 'Students',
+  },
+  {
+    icon: Calendar,
+    value: '4+',
+    label: 'Years',
+  },
 ];
 
-// Categories
 const CATEGORIES = [
-  { id: 'all', label: 'All', icon: Grid3x3 },
-  { id: 'classroom', label: 'Classroom', icon: LayoutGrid },
-  { id: 'celebration', label: 'Celebrations', icon: Star },
-  { id: 'certificate', label: 'Certificates', icon: Award }
+  {
+    id: 'all',
+    label: 'All Moments',
+    icon: Grid3X3,
+  },
+  {
+    id: 'classroom',
+    label: 'Classroom',
+    icon: LayoutGrid,
+  },
+  {
+    id: 'celebration',
+    label: 'Celebrations',
+    icon: Star,
+  },
+  {
+    id: 'certificate',
+    label: 'Certificates',
+    icon: Award,
+  },
 ];
 
-// Final placeholder image (base64 encoded gray box with text) — only used if
-// BOTH the primary and the Unsplash fallback fail to load (e.g. no network at all).
-const PLACEHOLDER = 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect width="400" height="300" fill="%23222"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="18" fill="%23666" text-anchor="middle"%3ENo Image%3C/text%3E%3C/svg%3E';
+const CATEGORY_STYLES = {
+  classroom:
+    'bg-blue-500/10 text-blue-300 border-blue-400/20',
+  celebration:
+    'bg-yellow-500/10 text-yellow-300 border-yellow-400/20',
+  certificate:
+    'bg-emerald-500/10 text-emerald-300 border-emerald-400/20',
+};
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -106,485 +209,851 @@ const Gallery = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [viewMode, setViewMode] = useState('grid');
-  // imageLevel[index] = 0 -> using src (picsum), 1 -> using fallback (unsplash), 2 -> using PLACEHOLDER
-  const [imageLevel, setImageLevel] = useState({});
   const [loadedImages, setLoadedImages] = useState({});
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
-  // Filter images based on category
-  const getFilteredImages = () => {
-    if (activeCategory === 'all') return GALLERY_IMAGES;
-    return GALLERY_IMAGES.filter(img => img.category === activeCategory);
-  };
+  const filteredImages = useMemo(() => {
+    if (activeCategory === 'all') {
+      return GALLERY_IMAGES;
+    }
 
-  const filteredImages = getFilteredImages();
+    return GALLERY_IMAGES.filter(
+      (image) => image.category === activeCategory
+    );
+  }, [activeCategory]);
 
-  // Mouse tracking for parallax
+  /* =========================
+     MOUSE PARALLAX
+  ========================= */
+
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (event) => {
       setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20
+        x:
+          (event.clientX / window.innerWidth - 0.5) * 20,
+        y:
+          (event.clientY / window.innerHeight - 0.5) * 20,
       });
     };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener(
+        'mousemove',
+        handleMouseMove
+      );
+    };
   }, []);
 
-  // Scroll handler
+  /* =========================
+     SCROLL
+  ========================= */
+
   useEffect(() => {
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 500);
+      setShowScrollTop(window.scrollY > 600);
     };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  // Intersection Observer for animations
+  /* =========================
+     BODY LOCK FOR LIGHTBOX
+  ========================= */
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
+    if (isLightboxOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
 
-    const elements = document.querySelectorAll('.reveal, .gallery-card, .stat-card');
-    elements.forEach((el) => observer.observe(el));
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isLightboxOpen]);
 
-    return () => observer.disconnect();
-  }, [activeCategory]);
+  /* =========================
+     KEYBOARD NAVIGATION
+  ========================= */
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (!isLightboxOpen) return;
+
+      if (event.key === 'Escape') {
+        closeLightbox();
+      }
+
+      if (event.key === 'ArrowLeft') {
+        navigateImage(-1);
+      }
+
+      if (event.key === 'ArrowRight') {
+        navigateImage(1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener(
+        'keydown',
+        handleKeyDown
+      );
+    };
+  }, [isLightboxOpen, currentIndex, filteredImages]);
+
+  /* =========================
+     LIGHTBOX
+  ========================= */
 
   const openLightbox = (image, index) => {
     setSelectedImage(image);
     setCurrentIndex(index);
     setIsLightboxOpen(true);
-    document.body.style.overflow = 'hidden';
   };
 
   const closeLightbox = () => {
     setIsLightboxOpen(false);
     setSelectedImage(null);
-    document.body.style.overflow = '';
   };
 
   const navigateImage = (direction) => {
-    const newIndex = (currentIndex + direction + filteredImages.length) % filteredImages.length;
-    setCurrentIndex(newIndex);
-    setSelectedImage(filteredImages[newIndex]);
+    const nextIndex =
+      (currentIndex +
+        direction +
+        filteredImages.length) %
+      filteredImages.length;
+
+    setCurrentIndex(nextIndex);
+    setSelectedImage(filteredImages[nextIndex]);
   };
+
+  /* =========================
+     IMAGE LOAD
+  ========================= */
+
+  const handleImageLoad = (id) => {
+    setLoadedImages((previous) => ({
+      ...previous,
+      [id]: true,
+    }));
+  };
+
+  /* =========================
+     SCROLL TOP
+  ========================= */
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
-  // Images are locally-generated SVGs now (no network calls), so this only
-  // triggers in the extremely unlikely case the data URI itself is malformed.
-  const handleImageError = (index) => {
-    setImageLevel(prev => ({ ...prev, [index]: 2 }));
-  };
+  /* =========================
+     CATEGORY
+  ========================= */
 
-  const handleImageLoad = (index) => {
-    setLoadedImages(prev => ({ ...prev, [index]: true }));
-  };
-
-  const getImageSrc = (image, index) => {
-    const level = imageLevel[index] || 0;
-    return level === 2 ? PLACEHOLDER : image.src;
-  };
-
-  const getCategoryBadgeColor = (category) => {
-    const colors = {
-      classroom: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      celebration: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-      certificate: 'bg-green-500/20 text-green-400 border-green-500/30'
+  const getCategoryName = (category) => {
+    const names = {
+      classroom: 'Classroom',
+      celebration: 'Celebration',
+      certificate: 'Certificate',
     };
-    return colors[category] || 'bg-red-500/20 text-red-400 border-red-500/30';
-  };
 
-  // Keyboard navigation for lightbox
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (!isLightboxOpen) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') navigateImage(-1);
-      if (e.key === 'ArrowRight') navigateImage(1);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, currentIndex, filteredImages]);
+    return names[category] || category;
+  };
 
   return (
-    <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      
+    <main className="min-h-screen overflow-x-hidden bg-[#050505] text-white">
+
+      {/* =========================================
+          GLOBAL STYLES
+      ========================================= */}
+
       <style>{`
-        @keyframes floatShape {
-          0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-          33% { transform: translateY(-25px) rotate(5deg) scale(1.05); }
-          66% { transform: translateY(15px) rotate(-5deg) scale(0.95); }
+        @keyframes floatOne {
+          0%, 100% {
+            transform: translate3d(0, 0, 0);
+          }
+          50% {
+            transform: translate3d(25px, -30px, 0);
+          }
         }
-        @keyframes pulseGlow {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.8; transform: scale(1.2); }
+
+        @keyframes floatTwo {
+          0%, 100% {
+            transform: translate3d(0, 0, 0);
+          }
+          50% {
+            transform: translate3d(-30px, 25px, 0);
+          }
         }
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(50px) scale(0.95); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
+
+        @keyframes pulseRed {
+          0%, 100% {
+            opacity: .15;
+            transform: scale(1);
+          }
+          50% {
+            opacity: .32;
+            transform: scale(1.12);
+          }
         }
-        @keyframes spinSlow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+
+        @keyframes revealUp {
+          from {
+            opacity: 0;
+            transform: translateY(35px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
+
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
         @keyframes lightboxIn {
-          from { opacity: 0; transform: scale(0.9) translateY(20px); }
-          to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .animate-float { animation: floatShape 8s ease-in-out infinite; }
-        .animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
-
-        .reveal {
-          opacity: 0;
-          transform: translateY(50px);
-          transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .reveal.is-visible {
-          opacity: 1;
-          transform: translateY(0);
+          from {
+            opacity: 0;
+            transform: scale(.94) translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
         }
 
-        .stat-card {
-          opacity: 0;
-          transform: translateY(40px) scale(0.9);
-          transition: all 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+        .gallery-reveal {
+          animation: revealUp .8s cubic-bezier(.2,.8,.2,1) both;
         }
-        .is-visible .stat-card {
-          opacity: 1;
-          transform: translateY(0) scale(1);
+
+        .float-one {
+          animation: floatOne 9s ease-in-out infinite;
         }
-        .stat-card:nth-child(1) { transition-delay: 0s; }
-        .stat-card:nth-child(2) { transition-delay: 0.1s; }
-        .stat-card:nth-child(3) { transition-delay: 0.2s; }
-        .stat-card:nth-child(4) { transition-delay: 0.3s; }
+
+        .float-two {
+          animation: floatTwo 11s ease-in-out infinite;
+        }
+
+        .pulse-red {
+          animation: pulseRed 5s ease-in-out infinite;
+        }
+
+        .lightbox-animation {
+          animation: lightboxIn .4s cubic-bezier(.2,.8,.2,1);
+        }
 
         .gallery-card {
-          opacity: 0;
-          transform: translateY(40px) scale(0.95);
-          transition: all 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
+          transition:
+            transform .5s cubic-bezier(.2,.8,.2,1),
+            border-color .4s ease,
+            box-shadow .5s ease;
         }
-        .is-visible .gallery-card {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-        .gallery-card:nth-child(1) { transition-delay: 0s; }
-        .gallery-card:nth-child(2) { transition-delay: 0.04s; }
-        .gallery-card:nth-child(3) { transition-delay: 0.08s; }
-        .gallery-card:nth-child(4) { transition-delay: 0.12s; }
-        .gallery-card:nth-child(5) { transition-delay: 0.16s; }
-        .gallery-card:nth-child(6) { transition-delay: 0.2s; }
-        .gallery-card:nth-child(7) { transition-delay: 0.24s; }
-        .gallery-card:nth-child(8) { transition-delay: 0.28s; }
-        .gallery-card:nth-child(9) { transition-delay: 0.32s; }
-        .gallery-card:nth-child(10) { transition-delay: 0.36s; }
-        .gallery-card:nth-child(11) { transition-delay: 0.4s; }
-        .gallery-card:nth-child(12) { transition-delay: 0.44s; }
 
         .gallery-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 60px rgba(239, 68, 68, 0.15);
+          transform: translateY(-8px);
         }
 
-        .lightbox-overlay {
-          animation: lightboxIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .gallery-card img {
+          transition:
+            transform .8s cubic-bezier(.2,.8,.2,1),
+            filter .5s ease;
         }
 
-        .filter-btn {
-          transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .gallery-card:hover img {
+          transform: scale(1.08);
+          filter: saturate(1.08);
         }
-        .filter-btn:hover {
+
+        .filter-button {
+          transition:
+            transform .3s ease,
+            background-color .3s ease,
+            border-color .3s ease,
+            color .3s ease;
+        }
+
+        .filter-button:hover {
           transform: translateY(-2px);
         }
-        .filter-btn.active {
-          background: rgba(239, 68, 68, 0.2);
-          border-color: rgba(239, 68, 68, 0.5);
-          color: #ef4444;
+
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
         }
 
-        .scroll-top-btn {
-          opacity: 0;
-          transform: translateY(20px) scale(0.8);
-          transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-        .scroll-top-btn.visible {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-
-        .parallax-shape {
-          transition: transform 0.15s ease-out;
-        }
-
-        @media (max-width: 768px) {
-          .gallery-card {
-            transition-delay: 0s !important;
-          }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
 
-      {/* ====== HERO SECTION ====== */}
-      <section className="relative min-h-[50vh] flex items-center justify-center px-6 sm:px-10 py-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div 
-            className="parallax-shape absolute top-[-200px] right-[-100px] w-[500px] h-[500px] rounded-full bg-red-600/10 animate-float"
-            style={{ transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)` }}
-          />
-          <div 
-            className="parallax-shape absolute bottom-[-150px] left-[-80px] w-[400px] h-[400px] rounded-full bg-red-600/5 animate-float"
-            style={{ animationDelay: '2s', transform: `translate(${mousePosition.x * -0.3}px, ${mousePosition.y * -0.3}px)` }}
-          />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-red-600/5 blur-3xl animate-pulse-glow" />
-        </div>
+      {/* =========================================
+          HERO
+      ========================================= */}
 
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-red-600/10 border border-red-600/20 mb-6 animate-[fadeInUp_0.6s_ease-out]">
-            <Images className="w-4 h-4 text-red-500 animate-[spinSlow_8s_linear_infinite]" />
-            <span className="text-xs font-mono uppercase tracking-widest text-red-500 font-semibold">Our Gallery</span>
+      <section className="relative isolate overflow-hidden px-5 pb-20 pt-28 sm:px-8 sm:pt-32 lg:px-12 lg:pb-28">
+
+        {/* Background */}
+        <div className="absolute inset-0 -z-20 bg-[#050505]" />
+
+        {/* Grid */}
+        <div
+          className="absolute inset-0 -z-10 opacity-[0.035]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)
+            `,
+            backgroundSize: '70px 70px',
+          }}
+        />
+
+        {/* Red Glow */}
+        <div
+          className="float-one absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-red-600/10 blur-3xl"
+          style={{
+            transform: `translate(
+              ${mousePosition.x * 0.5}px,
+              ${mousePosition.y * 0.5}px
+            )`,
+          }}
+        />
+
+        <div
+          className="float-two absolute -bottom-48 -left-40 h-[480px] w-[480px] rounded-full bg-red-700/[0.08] blur-3xl"
+          style={{
+            transform: `translate(
+              ${mousePosition.x * -0.3}px,
+              ${mousePosition.y * -0.3}px
+            )`,
+          }}
+        />
+
+        <div className="pulse-red absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/10 blur-[120px]" />
+
+        {/* Hero Content */}
+        <div className="mx-auto max-w-6xl text-center">
+
+          {/* Eyebrow */}
+          <div className="gallery-reveal inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/[0.07] px-4 py-2">
+            <Sparkles className="h-4 w-4 text-red-500" />
+
+            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-red-400">
+              IADE Gallery
+            </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tight leading-[1.1]">
-            Student <span className="text-red-500 relative">
-              Moments
-              <span className="absolute -bottom-2 left-0 right-0 h-2 bg-red-500/30 rounded-full -z-10" />
+          {/* Heading */}
+          <h1
+            className="gallery-reveal mt-7 text-5xl font-black leading-[.95] tracking-[-0.04em] sm:text-6xl lg:text-8xl"
+            style={{ animationDelay: '.08s' }}
+          >
+            Moments That
+            <br />
+
+            <span className="relative inline-block text-red-500">
+              Define Us.
+              <span className="absolute -bottom-2 left-0 h-[3px] w-full rounded-full bg-red-500/40" />
             </span>
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Celebrations, certifications, and achievements from our IADE community
+          {/* Description */}
+          <p
+            className="gallery-reveal mx-auto mt-7 max-w-2xl text-sm leading-7 text-white/50 sm:text-base"
+            style={{ animationDelay: '.16s' }}
+          >
+            Explore the learning, celebrations, achievements and
+            unforgettable moments that make the IADE student
+            community special.
           </p>
-        </div>
-      </section>
 
-      {/* ====== STATS SECTION ====== */}
-      <section className="reveal py-12 px-6 sm:px-10 border-y border-white/5 bg-white/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-            {STATS.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div key={index} className="stat-card group relative bg-white/5 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10 text-center transition-all duration-500 hover:border-red-500/40 hover:-translate-y-2 hover:shadow-xl shadow-red-500/10">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="inline-flex p-3 rounded-full bg-red-500/10 mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <Icon className="w-6 h-6 text-red-500" />
-                    </div>
-                    <p className="text-2xl sm:text-3xl font-black text-white group-hover:text-red-500 transition-colors">
-                      {stat.value}
-                    </p>
-                    <p className="text-xs font-mono text-gray-400 uppercase tracking-wider mt-1">{stat.label}</p>
-                  </div>
-                </div>
-              );
-            })}
+          {/* Mini CTA */}
+          <div
+            className="gallery-reveal mt-8 flex items-center justify-center gap-3"
+            style={{ animationDelay: '.24s' }}
+          >
+            <span className="h-px w-8 bg-red-500/40" />
+
+            <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/40">
+              Learn • Create • Grow
+            </span>
+
+            <span className="h-px w-8 bg-red-500/40" />
           </div>
         </div>
       </section>
 
-      {/* ====== FILTER BAR ====== */}
-      <section className="py-8 px-6 sm:px-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+      {/* =========================================
+          STATS
+      ========================================= */}
+
+      <section className="border-y border-white/[0.06] bg-white/[0.025] px-5 py-8 sm:px-8 lg:px-12">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 divide-x divide-white/[0.07] sm:grid-cols-4">
+
+          {STATS.map((stat, index) => {
+            const Icon = stat.icon;
+
+            return (
+              <div
+                key={stat.label}
+                className="group px-5 py-4 text-center sm:px-8"
+              >
+                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] transition-all duration-300 group-hover:border-red-500/30 group-hover:bg-red-500/10">
+                  <Icon className="h-4 w-4 text-red-500" />
+                </div>
+
+                <p className="text-2xl font-black tracking-tight text-white sm:text-3xl">
+                  {stat.value}
+                </p>
+
+                <p className="mt-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-white/35">
+                  {stat.label}
+                </p>
+              </div>
+            );
+          })}
+
+        </div>
+      </section>
+
+      {/* =========================================
+          FILTER SECTION
+      ========================================= */}
+
+      <section className="px-5 pb-8 pt-14 sm:px-8 lg:px-12">
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+
+            <div>
+              <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.3em] text-red-500">
+                Explore Gallery
+              </p>
+
+              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                Every Moment Matters.
+              </h2>
+            </div>
+
+            {/* View Switch */}
+            <div className="flex items-center gap-2 self-start rounded-xl border border-white/10 bg-white/[0.03] p-1 lg:self-auto">
+
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`rounded-lg p-2.5 transition-all ${
+                  viewMode === 'grid'
+                    ? 'bg-red-500 text-white'
+                    : 'text-white/40 hover:text-white'
+                }`}
+                aria-label="Grid view"
+              >
+                <Grid3X3 className="h-4 w-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setViewMode('list')}
+                className={`rounded-lg p-2.5 transition-all ${
+                  viewMode === 'list'
+                    ? 'bg-red-500 text-white'
+                    : 'text-white/40 hover:text-white'
+                }`}
+                aria-label="List view"
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="hide-scrollbar mt-7 flex gap-2 overflow-x-auto pb-2">
+
             {CATEGORIES.map((category) => {
               const Icon = category.icon;
-              const isActive = activeCategory === category.id;
+              const isActive =
+                activeCategory === category.id;
+
               return (
                 <button
                   key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`filter-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full border transition-all duration-300 ${
-                    isActive 
-                      ? 'bg-red-500/20 border-red-500/50 text-red-500' 
-                      : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:border-white/30'
+                  type="button"
+                  onClick={() =>
+                    setActiveCategory(category.id)
+                  }
+                  className={`filter-button inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2.5 text-xs font-semibold ${
+                    isActive
+                      ? 'border-red-500/40 bg-red-500 text-white shadow-lg shadow-red-500/10'
+                      : 'border-white/10 bg-white/[0.03] text-white/45 hover:border-white/20 hover:text-white'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm font-medium">{category.label}</span>
+                  <Icon className="h-3.5 w-3.5" />
+
+                  {category.label}
+
                   {isActive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    <span className="ml-1 h-1.5 w-1.5 rounded-full bg-white" />
                   )}
                 </button>
               );
             })}
-            
-            <div className="ml-auto flex items-center gap-2">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-red-500/20 text-red-500' : 'text-gray-400 hover:text-white'}`}
-              >
-                <Grid3x3 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-red-500/20 text-red-500' : 'text-gray-400 hover:text-white'}`}
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-            </div>
+
           </div>
         </div>
       </section>
 
-      {/* ====== GALLERY GRID ====== */}
-      <section className="py-8 px-6 sm:px-10 pb-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredImages.map((image, index) => {
-              const imgSrc = getImageSrc(image, index);
-              const isLoaded = loadedImages[index];
-              const level = imageLevel[index] || 0;
-              
-              return (
-                <div
-                  key={index}
-                  className="gallery-card group relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden cursor-pointer transition-all duration-500 hover:border-red-500/40 hover:shadow-2xl hover:shadow-red-500/10"
-                  onClick={() => openLightbox(image, index)}
-                >
-                  {/* Image Container */}
-                  <div className="relative aspect-[4/3] overflow-hidden bg-gray-900">
-                    <img
-                      src={imgSrc}
-                      alt={image.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                      onLoad={() => handleImageLoad(index)}
-                      onError={() => handleImageError(index)}
-                    />
-                    
-                    {/* Loading Skeleton */}
-                    {!isLoaded && level < 2 && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 animate-pulse" />
-                    )}
-                    
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    {/* Category Badge */}
-                    <div className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-medium ${getCategoryBadgeColor(image.category)} backdrop-blur-sm border`}>
-                      {image.category.charAt(0).toUpperCase() + image.category.slice(1)}
-                    </div>
+      {/* =========================================
+          GALLERY
+      ========================================= */}
 
-                    {/* Zoom Icon */}
-                    <div className="absolute top-3 right-3 p-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                      <ZoomIn className="w-4 h-4 text-white" />
-                    </div>
+      <section className="px-5 pb-24 sm:px-8 lg:px-12">
 
-                    {/* Bottom Info - Shows on Hover */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                      <h4 className="text-white font-bold text-sm">{image.title}</h4>
-                      <p className="text-gray-300 text-xs flex items-center gap-1.5 mt-1">
-                        <Calendar className="w-3 h-3" />
-                        {image.date}
-                      </p>
-                    </div>
-                  </div>
+        <div className="mx-auto max-w-7xl">
 
-                  {/* Card Footer - Always Visible */}
-                  <div className="p-4 flex items-center justify-between border-t border-white/5">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-white font-semibold text-sm truncate">{image.title}</h4>
-                      <p className="text-gray-400 text-xs flex items-center gap-1.5">
-                        <Calendar className="w-3 h-3" />
-                        {image.date}
-                      </p>
-                    </div>
-                    <div className={`ml-2 px-2.5 py-1 rounded-full text-[10px] font-medium whitespace-nowrap ${getCategoryBadgeColor(image.category)}`}>
-                      {image.category}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {filteredImages.length > 0 ? (
 
-          {/* Empty State */}
-          {filteredImages.length === 0 && (
-            <div className="text-center py-20">
-              <Image className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-white">No Images Found</h3>
-              <p className="text-gray-400 mt-2">Try selecting a different category</p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ====== LIGHTBOX ====== */}
-      {isLightboxOpen && selectedImage && (
-        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="lightbox-overlay relative max-w-6xl w-full max-h-[90vh]">
-            {/* Close Button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute -top-12 right-0 p-2 text-gray-400 hover:text-white transition-colors z-20"
+            <div
+              className={
+                viewMode === 'grid'
+                  ? 'grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                  : 'grid grid-cols-1 gap-5 md:grid-cols-2'
+              }
             >
-              <X className="w-8 h-8" />
-            </button>
 
-            {/* Main Image */}
-            <div className="relative bg-black/50 rounded-2xl overflow-hidden border border-white/10">
+              {filteredImages.map((image, index) => {
+
+                const isLoaded =
+                  loadedImages[image.id];
+
+                return (
+                  <article
+                    key={image.id}
+                    className={`gallery-card group cursor-pointer overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.025] ${
+                      viewMode === 'list'
+                        ? 'flex flex-col sm:flex-row'
+                        : ''
+                    }`}
+                    style={{
+                      animation:
+                        'revealUp .7s cubic-bezier(.2,.8,.2,1) both',
+                      animationDelay: `${Math.min(
+                        index * 0.04,
+                        0.5
+                      )}s`,
+                    }}
+                    onClick={() =>
+                      openLightbox(image, index)
+                    }
+                  >
+
+                    {/* Image */}
+                    <div
+                      className={`relative overflow-hidden bg-[#111] ${
+                        viewMode === 'list'
+                          ? 'aspect-[4/3] w-full sm:w-2/5'
+                          : 'aspect-[4/3]'
+                      }`}
+                    >
+
+                      {!isLoaded && (
+                        <div className="absolute inset-0 z-10 overflow-hidden bg-white/[0.04]">
+                          <div className="absolute inset-y-0 left-0 w-1/2 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.06] to-transparent animate-[shimmer_1.5s_infinite]" />
+                        </div>
+                      )}
+
+                      <img
+                        src={image.src}
+                        alt={image.title}
+                        loading="lazy"
+                        onLoad={() =>
+                          handleImageLoad(image.id)
+                        }
+                        className={`h-full w-full object-cover ${
+                          isLoaded
+                            ? 'opacity-100'
+                            : 'opacity-0'
+                        }`}
+                      />
+
+                      {/* Dark overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-90" />
+
+                      {/* Top Badge */}
+                      <div className="absolute left-4 top-4">
+                        <span
+                          className={`rounded-full border px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.15em] backdrop-blur-md ${
+                            CATEGORY_STYLES[
+                              image.category
+                            ]
+                          }`}
+                        >
+                          {getCategoryName(
+                            image.category
+                          )}
+                        </span>
+                      </div>
+
+                      {/* Zoom */}
+                      <div className="absolute right-4 top-4 flex h-9 w-9 translate-y-[-4px] items-center justify-center rounded-full border border-white/15 bg-black/40 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        <ZoomIn className="h-4 w-4 text-white" />
+                      </div>
+
+                      {/* Bottom Info */}
+                      <div className="absolute bottom-0 left-0 right-0 p-5">
+
+                        <div className="translate-y-3 transition-transform duration-500 group-hover:translate-y-0">
+
+                          <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.2em] text-red-400">
+                            {image.tag}
+                          </p>
+
+                          <h3 className="text-base font-bold leading-snug text-white">
+                            {image.title}
+                          </h3>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div
+                      className={`flex items-center justify-between gap-3 border-t border-white/[0.06] p-4 ${
+                        viewMode === 'list'
+                          ? 'flex-1 border-t sm:border-l sm:border-t-0'
+                          : ''
+                      }`}
+                    >
+
+                      <div className="min-w-0">
+
+                        <p className="flex items-center gap-1.5 text-[10px] text-white/35">
+                          <Calendar className="h-3 w-3" />
+                          {image.date}
+                        </p>
+
+                        <p className="mt-1 truncate text-xs font-semibold text-white/70">
+                          {image.title}
+                        </p>
+
+                      </div>
+
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] transition-all duration-300 group-hover:border-red-500/30 group-hover:bg-red-500 group-hover:text-white">
+                        <MoveUpRight className="h-3.5 w-3.5" />
+                      </div>
+
+                    </div>
+
+                  </article>
+                );
+              })}
+
+            </div>
+
+          ) : (
+
+            <div className="rounded-3xl border border-white/10 bg-white/[0.02] py-24 text-center">
+
+              <ImageIcon className="mx-auto h-12 w-12 text-white/20" />
+
+              <h3 className="mt-5 text-xl font-bold text-white">
+                No Moments Found
+              </h3>
+
+              <p className="mt-2 text-sm text-white/35">
+                Try selecting another category.
+              </p>
+
+            </div>
+
+          )}
+
+        </div>
+      </section>
+
+      {/* =========================================
+          BOTTOM CTA
+      ========================================= */}
+
+      <section className="relative overflow-hidden border-t border-white/[0.06] px-5 py-20 sm:px-8 lg:px-12">
+
+        <div className="absolute left-1/2 top-1/2 -z-10 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/[0.06] blur-3xl" />
+
+        <div className="mx-auto max-w-3xl text-center">
+
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-red-500/20 bg-red-500/10">
+            <Images className="h-5 w-5 text-red-500" />
+          </div>
+
+          <h2 className="mt-6 text-3xl font-black tracking-tight text-white sm:text-4xl">
+            Your Moment Could Be
+            <span className="text-red-500"> Next.</span>
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-white/40">
+            Join the IADE community, build real-world skills,
+            create your portfolio and become part of our next
+            success story.
+          </p>
+
+        </div>
+      </section>
+
+      {/* =========================================
+          LIGHTBOX
+      ========================================= */}
+
+      {isLightboxOpen && selectedImage && (
+
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 backdrop-blur-xl sm:p-8"
+          onClick={closeLightbox}
+        >
+
+          {/* Close */}
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white/60 transition-all hover:border-red-500/30 hover:bg-red-500 hover:text-white sm:right-8 sm:top-8"
+            aria-label="Close gallery"
+          >
+            <X className="h-5 w-5" />
+          </button>
+
+          {/* Main */}
+          <div
+            className="lightbox-animation relative flex w-full max-w-6xl flex-col"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+
+            {/* Image */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black">
+
               <img
-                src={getImageSrc(selectedImage, currentIndex)}
+                src={selectedImage.src}
                 alt={selectedImage.title}
-                className="w-full max-h-[75vh] object-contain"
-                onError={() => handleImageError(currentIndex)}
+                className="max-h-[72vh] w-full object-contain"
               />
-              
-              {/* Image Info Overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                <h3 className="text-2xl font-bold text-white">{selectedImage.title}</h3>
-                <div className="flex items-center gap-4 mt-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getCategoryBadgeColor(selectedImage.category)} border`}>
-                    {selectedImage.category}
-                  </span>
-                  <span className="text-gray-300 text-sm flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4" />
-                    {selectedImage.date}
-                  </span>
+
+              {/* Bottom Gradient */}
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/60 to-transparent px-5 pb-5 pt-20 sm:px-8 sm:pb-8">
+
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+
+                  <div>
+
+                    <span
+                      className={`inline-flex rounded-full border px-3 py-1 text-[9px] font-bold uppercase tracking-[0.15em] ${
+                        CATEGORY_STYLES[
+                          selectedImage.category
+                        ]
+                      }`}
+                    >
+                      {getCategoryName(
+                        selectedImage.category
+                      )}
+                    </span>
+
+                    <h2 className="mt-3 text-xl font-bold text-white sm:text-3xl">
+                      {selectedImage.title}
+                    </h2>
+
+                    <p className="mt-2 flex items-center gap-2 text-xs text-white/45">
+                      <Calendar className="h-3.5 w-3.5" />
+                      {selectedImage.date}
+                    </p>
+
+                  </div>
+
+                  <div className="hidden text-right sm:block">
+
+                    <p className="text-2xl font-black text-white">
+                      {String(
+                        currentIndex + 1
+                      ).padStart(2, '0')}
+                    </p>
+
+                    <p className="text-[9px] uppercase tracking-[0.2em] text-white/30">
+                      of{' '}
+                      {String(
+                        filteredImages.length
+                      ).padStart(2, '0')}
+                    </p>
+
+                  </div>
+
                 </div>
+
               </div>
             </div>
 
-            {/* Navigation Buttons */}
+            {/* Previous */}
             <button
-              onClick={() => navigateImage(-1)}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-white hover:bg-red-500 transition-all hover:scale-110"
+              type="button"
+              onClick={() =>
+                navigateImage(-1)
+              }
+              className="absolute left-2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white backdrop-blur-md transition-all hover:scale-110 hover:border-red-500 hover:bg-red-500 sm:left-0 sm:h-14 sm:w-14"
+              aria-label="Previous image"
             >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={() => navigateImage(1)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 text-white hover:bg-red-500 transition-all hover:scale-110"
-            >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
 
-            {/* Counter */}
-            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-sm text-gray-400 font-mono tracking-wider">
-              {currentIndex + 1} / {filteredImages.length}
-            </div>
+            {/* Next */}
+            <button
+              type="button"
+              onClick={() =>
+                navigateImage(1)
+              }
+              className="absolute right-2 top-1/2 flex h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white backdrop-blur-md transition-all hover:scale-110 hover:border-red-500 hover:bg-red-500 sm:right-0 sm:h-14 sm:w-14"
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
+
           </div>
         </div>
       )}
 
-      {/* ====== SCROLL TO TOP ====== */}
+      {/* =========================================
+          SCROLL TOP
+      ========================================= */}
+
       <button
+        type="button"
         onClick={scrollToTop}
-        className={`scroll-top-btn fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/30 transition-all duration-300 hover:scale-110 flex items-center justify-center ${showScrollTop ? 'visible' : ''}`}
         aria-label="Scroll to top"
+        className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-red-500/30 bg-red-500 text-white shadow-xl shadow-red-500/20 transition-all duration-300 sm:bottom-8 sm:right-8 ${
+          showScrollTop
+            ? 'translate-y-0 scale-100 opacity-100'
+            : 'pointer-events-none translate-y-5 scale-75 opacity-0'
+        }`}
       >
-        <ArrowUp className="w-5 h-5" />
+        <ArrowUp className="h-4 w-4" />
       </button>
 
     </main>

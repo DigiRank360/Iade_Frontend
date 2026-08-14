@@ -55,6 +55,7 @@ const PANELS = [
 
 export default function CoverflowHero() {
   const [progress, setProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   const dragging = useRef(false);
   const startX = useRef(0);
@@ -62,6 +63,24 @@ export default function CoverflowHero() {
   const animRef = useRef(null);
 
   const reduced = useReducedMotion();
+
+  /* =====================================================
+     RESPONSIVE SCREEN SIZE
+  ====================================================== */
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkScreen();
+
+    window.addEventListener("resize", checkScreen);
+
+    return () => {
+      window.removeEventListener("resize", checkScreen);
+    };
+  }, []);
 
   /* =====================================================
      AUTO LOOP
@@ -76,6 +95,7 @@ export default function CoverflowHero() {
 
     const animate = (time) => {
       const delta = time - lastTime;
+
       lastTime = time;
 
       if (!dragging.current) {
@@ -84,10 +104,12 @@ export default function CoverflowHero() {
         );
       }
 
-      animRef.current = requestAnimationFrame(animate);
+      animRef.current =
+        requestAnimationFrame(animate);
     };
 
-    animRef.current = requestAnimationFrame(animate);
+    animRef.current =
+      requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animRef.current);
@@ -100,17 +122,30 @@ export default function CoverflowHero() {
 
   const onPointerDown = (e) => {
     dragging.current = true;
+
     startX.current = e.clientX;
+
     lastProgress.current = progress;
   };
 
   const onPointerMove = (e) => {
     if (!dragging.current) return;
 
-    const deltaX = e.clientX - startX.current;
+    const deltaX =
+      e.clientX - startX.current;
+
+    /*
+      Slightly stronger swipe sensitivity on mobile
+      while keeping desktop behavior unchanged.
+    */
+
+    const sensitivity = isMobile
+      ? 250
+      : 320;
 
     const newProgress =
-      lastProgress.current - deltaX / 320;
+      lastProgress.current -
+      deltaX / sensitivity;
 
     const total = PANELS.length;
 
@@ -123,6 +158,18 @@ export default function CoverflowHero() {
     dragging.current = false;
   };
 
+  /* =====================================================
+     COVERFLOW SETTINGS
+  ====================================================== */
+
+  const cardWidth = isMobile
+    ? "clamp(205px, 65vw, 280px)"
+    : "clamp(220px, 28vw, 380px)";
+
+  const cardHeight = isMobile
+    ? "clamp(290px, 88vw, 390px)"
+    : "clamp(300px, 38vw, 500px)";
+
   return (
     <section className="relative w-full overflow-hidden bg-ink pt-24 sm:pt-28 pb-8 text-paper">
 
@@ -131,12 +178,36 @@ export default function CoverflowHero() {
       ====================================================== */}
 
       <div
-        className="pointer-events-none absolute top-0 left-0 right-0 h-56 bg-gradient-to-b from-brand/30 via-brand/10 to-transparent blur-2xl opacity-80"
+        className="
+          pointer-events-none
+          absolute
+          top-0
+          left-0
+          right-0
+          h-56
+          bg-gradient-to-b
+          from-brand/30
+          via-brand/10
+          to-transparent
+          blur-2xl
+          opacity-80
+        "
         aria-hidden="true"
       />
 
       <div
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[65vw] h-28 bg-brand/15 blur-[90px] rounded-full"
+        className="
+          pointer-events-none
+          absolute
+          top-0
+          left-1/2
+          -translate-x-1/2
+          w-[65vw]
+          h-28
+          bg-brand/15
+          blur-[90px]
+          rounded-full
+        "
         aria-hidden="true"
       />
 
@@ -159,7 +230,17 @@ export default function CoverflowHero() {
 
               <span className="block w-8 h-[1px] bg-brand" />
 
-              <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-brand">
+              <span
+                className="
+                  text-[8px]
+                  sm:text-[10px]
+                  font-bold
+                  uppercase
+                  tracking-[0.2em]
+                  sm:tracking-[0.25em]
+                  text-brand
+                "
+              >
                 Welcome to Indian Academy Of Digital Education
               </span>
 
@@ -180,7 +261,6 @@ export default function CoverflowHero() {
                 uppercase
               "
             >
-
               <span className="text-paper">
                 Learn Digital
               </span>
@@ -202,11 +282,21 @@ export default function CoverflowHero() {
               <span className="text-brand">
                 Get Hired.
               </span>
-
             </h2>
 
             {/* Supporting Statement */}
-            <p className="mt-6 max-w-lg text-sm sm:text-base md:text-lg leading-relaxed text-brand font-medium">
+            <p
+              className="
+                mt-6
+                max-w-lg
+                text-sm
+                sm:text-base
+                md:text-lg
+                leading-relaxed
+                text-brand
+                font-medium
+              "
+            >
               Learn practical skills. Build your career.
               Get ready for the future of digital work.
             </p>
@@ -220,8 +310,16 @@ export default function CoverflowHero() {
           <div className="lg:pt-10">
 
             {/* Description */}
-            <p className="max-w-xl text-sm sm:text-base md:text-lg leading-[1.65] text-paper/55">
-
+            <p
+              className="
+                max-w-xl
+                text-sm
+                sm:text-base
+                md:text-lg
+                leading-[1.65]
+                text-paper/55
+              "
+            >
               At Indian Academy Of Digital Education, we help
               students build practical digital skills, gain
               industry-ready experience, and prepare for
@@ -234,12 +332,24 @@ export default function CoverflowHero() {
               design, video editing, or technical skills,
               our programs are designed to help you learn
               with real-world applications.
-
             </p>
 
             {/* Skill / Career / Growth */}
-            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[9px] sm:text-[10px] uppercase tracking-[0.28em] font-bold">
-
+            <div
+              className="
+                mt-5
+                flex
+                flex-wrap
+                items-center
+                gap-x-3
+                gap-y-2
+                text-[9px]
+                sm:text-[10px]
+                uppercase
+                tracking-[0.28em]
+                font-bold
+              "
+            >
               <span className="text-paper/50">
                 Skills
               </span>
@@ -259,11 +369,18 @@ export default function CoverflowHero() {
               <span className="text-paper/50">
                 Growth
               </span>
-
             </div>
 
             {/* Buttons */}
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div
+              className="
+                mt-7
+                flex
+                flex-wrap
+                items-center
+                gap-3
+              "
+            >
 
               {/* Let's Talk */}
               <Link
@@ -341,30 +458,47 @@ export default function CoverflowHero() {
           z-10
           mt-7
           sm:mt-9
-          h-[52vh]
+          h-[430px]
           sm:h-[58vh]
-          min-h-[400px]
+          sm:min-h-[400px]
           select-none
           touch-pan-y
           cursor-grab
           active:cursor-grabbing
         "
-        style={{ perspective: "1800px" }}
+        style={{
+          perspective: "1800px",
+        }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
+        onPointerCancel={endDrag}
         onPointerLeave={endDrag}
       >
 
+        {/* ===================================================
+            COVERFLOW TRACK
+        ==================================================== */}
+
         <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ transformStyle: "preserve-3d" }}
+          className="
+            absolute
+            inset-0
+            flex
+            items-center
+            justify-center
+          "
+          style={{
+            transformStyle: "preserve-3d",
+          }}
         >
 
           {PANELS.map((panel, index) => {
+
             const count = PANELS.length;
 
-            let offset = (index - progress) % count;
+            let offset =
+              (index - progress) % count;
 
             if (offset > count / 2) {
               offset -= count;
@@ -376,55 +510,127 @@ export default function CoverflowHero() {
 
             const abs = Math.abs(offset);
 
-            const rotateY = Math.max(
-              -50,
-              Math.min(50, offset * -20)
-            );
+            /*
+              ================================================
+              RESPONSIVE COVERFLOW
+              ================================================
 
-            const translateX = offset * 270;
+              Desktop:
+                Horizontal = 270px
+                Depth      = 190px
+                Rotation   = 20deg
 
-            const translateZ = -abs * 190;
+              Mobile:
+                Horizontal = 145px
+                Depth      = 100px
+                Rotation   = 16deg
 
-            const scale = Math.max(
-              0.58,
-              1 - abs * 0.13
-            );
+              This keeps the same visual structure while
+              preventing cards from disappearing outside
+              the mobile viewport.
+            */
 
-            const opacity = Math.max(
-              0,
-              1 - abs * 0.3
-            );
+            const translateX = isMobile
+              ? offset * 145
+              : offset * 270;
+
+            const translateZ = isMobile
+              ? -abs * 100
+              : -abs * 190;
+
+            const rotateY = isMobile
+              ? Math.max(
+                  -36,
+                  Math.min(36, offset * -16)
+                )
+              : Math.max(
+                  -50,
+                  Math.min(50, offset * -20)
+                );
+
+            const scale = isMobile
+              ? Math.max(
+                  0.68,
+                  1 - abs * 0.10
+                )
+              : Math.max(
+                  0.58,
+                  1 - abs * 0.13
+                );
+
+            const opacity = isMobile
+              ? Math.max(
+                  0.18,
+                  1 - abs * 0.25
+                )
+              : Math.max(
+                  0,
+                  1 - abs * 0.3
+                );
 
             return (
               <div
                 key={index}
                 className="absolute"
                 style={{
-                  width: "clamp(220px, 28vw, 380px)",
-                  height: "clamp(300px, 38vw, 500px)",
+                  width: cardWidth,
+                  height: cardHeight,
+
                   transform: `
                     translateX(${translateX}px)
                     translateZ(${translateZ}px)
                     rotateY(${rotateY}deg)
                     scale(${scale})
                   `,
+
                   opacity,
-                  filter: `brightness(${1 - abs * 0.12})`,
-                  zIndex: Math.round(50 - abs * 10),
+
+                  filter: `
+                    brightness(${1 - abs * 0.12})
+                  `,
+
+                  zIndex:
+                    Math.round(50 - abs * 10),
+
                   pointerEvents: "none",
-                  willChange: "transform, opacity",
+
+                  willChange:
+                    "transform, opacity",
                 }}
               >
 
-                {/* CARD */}
-                <div className="group relative w-full h-full overflow-hidden bg-neutral-950 border border-white/10 shadow-2xl shadow-black/60">
+                {/* =================================================
+                    CARD
+                ================================================= */}
+
+                <div
+                  className="
+                    group
+                    relative
+                    w-full
+                    h-full
+                    overflow-hidden
+                    bg-neutral-950
+                    border
+                    border-white/10
+                    shadow-2xl
+                    shadow-black/60
+                  "
+                >
 
                   {/* Background Image */}
                   {panel.img && (
                     <img
                       src={panel.img}
                       alt={panel.title}
-                      className="absolute inset-0 w-full h-full object-cover opacity-45"
+                      className="
+                        absolute
+                        inset-0
+                        w-full
+                        h-full
+                        object-cover
+                        opacity-45
+                      "
                       loading="lazy"
                     />
                   )}
@@ -442,7 +648,17 @@ export default function CoverflowHero() {
                   </div>
 
                   {/* Bottom Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-white/[0.04] pointer-events-none" />
+                  <div
+                    className="
+                      absolute
+                      inset-0
+                      bg-gradient-to-t
+                      from-black/70
+                      via-transparent
+                      to-white/[0.04]
+                      pointer-events-none
+                    "
+                  />
 
                 </div>
 
@@ -452,15 +668,28 @@ export default function CoverflowHero() {
 
         </div>
 
-        {/* =================================================
-            IADE WORDMARK
-        ================================================= */}
+        {/* =====================================================
+            CENTER IADE WORDMARK
+        ====================================================== */}
 
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+        <div
+          className="
+            absolute
+            inset-0
+            z-20
+            flex
+            flex-col
+            items-center
+            justify-center
+            pointer-events-none
+            px-4
+            text-center
+          "
+        >
 
           <h1
             className="
-              text-[15vw]
+              text-[17vw]
               sm:text-[9vw]
               leading-none
               font-display
@@ -470,32 +699,41 @@ export default function CoverflowHero() {
               select-none
             "
           >
-
-            {/* I — BLACK */}
+            {/* I */}
             <span className="text-black">
               I
             </span>
 
-            {/* A — RED */}
+            {/* A */}
             <span className="text-brand">
               A
             </span>
 
-            {/* D — BLACK */}
+            {/* D */}
             <span className="text-black">
               D
             </span>
 
-            {/* E — DARK RED */}
+            {/* E */}
             <span className="text-brandDark">
               E
             </span>
-
           </h1>
 
           {/* Tagline */}
-          <p className="mt-3 text-[10px] sm:text-xs font-body tracking-[0.2em] font-semibold uppercase">
-
+          <p
+            className="
+              mt-2
+              sm:mt-3
+              text-[8px]
+              sm:text-xs
+              font-body
+              tracking-[0.18em]
+              sm:tracking-[0.2em]
+              font-semibold
+              uppercase
+            "
+          >
             <span className="text-paper">
               Academy of{" "}
             </span>
@@ -503,11 +741,21 @@ export default function CoverflowHero() {
             <span className="text-brand">
               Digital Education
             </span>
-
           </p>
 
           {/* Location */}
-          <p className="mt-1.5 text-[9px] sm:text-[10px] font-body uppercase tracking-[0.35em] text-paper/50">
+          <p
+            className="
+              mt-1
+              text-[8px]
+              sm:text-[10px]
+              font-body
+              uppercase
+              tracking-[0.3em]
+              sm:tracking-[0.35em]
+              text-paper/50
+            "
+          >
             Bhopal
           </p>
 
@@ -519,11 +767,23 @@ export default function CoverflowHero() {
           SLIDER INDICATORS
       ====================================================== */}
 
-      <div className="relative z-20 flex items-center justify-center gap-2 pb-6">
+      <div
+        className="
+          relative
+          z-20
+          flex
+          items-center
+          justify-center
+          gap-2
+          pb-6
+        "
+      >
 
         {PANELS.map((_, index) => {
+
           const currentActive =
-            Math.round(progress) % PANELS.length;
+            Math.round(progress) %
+            PANELS.length;
 
           const isActive =
             currentActive === index;
@@ -550,7 +810,10 @@ export default function CoverflowHero() {
 
       </div>
 
-      {/* Minimal Divider */}
+      {/* =====================================================
+          DIVIDER
+      ====================================================== */}
+
       <div className="relative z-10 border-t border-white/[0.06]" />
 
     </section>

@@ -10,6 +10,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
 } from "lucide-react";
+import EnrollCTA from "../components/EnrollCTA.jsx";
 
 export default function Contact() {
   return (
@@ -26,7 +27,7 @@ export default function Contact() {
               Contact IADE
             </p>
 
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-8xl font-bold uppercase leading-[0.9] tracking-tight">
+            <h1 className="font-display text-5xl sm:text-3xl lg:text-5xl font-bold uppercase leading-[0.9] tracking-tight">
               Let's Build
               <span className="block text-brand">Your Future.</span>
             </h1>
@@ -269,52 +270,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ================= BOTTOM CTA ================= */}
-      <section className="relative px-6 sm:px-10 pb-28">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-surface px-6 py-14 sm:px-12 sm:py-20 text-center">
-
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-72 h-72 bg-brand/15 blur-[100px] rounded-full" />
-
-            <div className="relative">
-              <p className="text-brand text-xs font-bold uppercase tracking-[0.35em] mb-5">
-                Your Next Step Starts Here
-              </p>
-
-              <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold uppercase leading-tight">
-                Ready To
-                <span className="text-brand"> Level Up?</span>
-              </h2>
-
-              <p className="max-w-2xl mx-auto mt-5 text-muted leading-relaxed">
-                Whether you're starting from zero or upgrading your existing
-                skills, IADE can help you build practical digital skills for
-                today's career opportunities.
-              </p>
-
-              <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-                <a
-                  href="https://wa.me/918319578939"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-paper hover:scale-105 transition-all"
-                >
-                  Talk To An Expert
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-
-                <a
-                  href={`tel:${CONTACT.phone1}`}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-paper hover:border-brand hover:text-brand transition-all"
-                >
-                  <Phone className="w-4 h-4" />
-                  Call Now
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <EnrollCTA />
 
     </main>
   );

@@ -52,8 +52,7 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeMobileDropdown, setActiveMobileDropdown] =
-    useState(null);
+  const [activeMobileDropdown, setActiveMobileDropdown] = useState(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -119,6 +118,9 @@ export default function Navbar() {
                       "text-paper/90",
                       "transition-colors duration-300",
                       "hover:text-brand",
+
+                      // Active page changes text color only.
+                      // No default underline.
                       isActive && "text-brand"
                     )
                   }
@@ -142,27 +144,22 @@ export default function Navbar() {
                         />
                       )}
 
-                      {/* ================= CENTER UNDERLINE ================= */}
+                      {/* ================= HOVER ONLY UNDERLINE ================= */}
                       <span
-                        className={cn(
-                          "absolute",
-                          "left-1/2",
-                          "-translate-x-1/2",
-                          "bottom-0",
-                          "h-[2px]",
-                          "w-0",
-                          "rounded-full",
-                          "bg-brand",
-                          "transition-all",
-                          "duration-300",
-                          "ease-out",
-
-                          // Hover underline
-                          "group-hover:w-full",
-
-                          // Active underline
-                          isActive && "w-full"
-                        )}
+                        className="
+                          absolute
+                          left-1/2
+                          -translate-x-1/2
+                          bottom-0
+                          h-[2px]
+                          w-0
+                          rounded-full
+                          bg-brand
+                          transition-all
+                          duration-300
+                          ease-out
+                          group-hover:w-full
+                        "
                       />
                     </>
                   )}
@@ -180,7 +177,7 @@ export default function Navbar() {
                       invisible
                       translate-y-2
                       group-hover:opacity-100
-                      // group-hover:visible
+                      group-hover:visible
                       group-hover:translate-y-0
                       transition-all
                       duration-300
