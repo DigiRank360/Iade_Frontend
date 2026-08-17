@@ -41,6 +41,7 @@ import kusal from '../../assets/trainer/kusal.png';
 import chetna from '../../assets/trainer/chetna.png';
 import pratiksha from '../../assets/trainer/pratiksha.png';
 import hari from '../../assets/trainer/hari.png';
+import pragati from '../../assets/trainer/pragati.png';
 
 /* =========================================================
    TRAINERS
@@ -52,8 +53,7 @@ const TRAINERS = [
     name: 'Pragati Warkade',
     role: 'Academic Counsellor',
     specialty: 'Career Mentor',
-    image:
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=85',
+    image: pragati,
     qualification: 'MSC- Botany (RDVV Jabalpur) / PGDCA (MCU)',
     experience: '3+ Years',
     expertise: [
@@ -140,7 +140,7 @@ const TRAINERS = [
     role: 'WordPress & Full Stack Developer',
     specialty: 'WP & Full Stack Developer Mentor',
     image:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=900&q=85',
+      'https://images.unsplash.com/photo-1714328564923-d4826427c991?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bWVuJTIwZm9ybWFsfGVufDB8fDB8fHww',
     qualification: 'B-Tech, WordPress Certified, Full Stack Certified',
     experience: '2+ Years',
     expertise: ['WordPress', 'React', 'Full Stack Development'],
