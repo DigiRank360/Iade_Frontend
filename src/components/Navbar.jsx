@@ -118,9 +118,6 @@ export default function Navbar() {
                       "text-paper/90",
                       "transition-colors duration-300",
                       "hover:text-brand",
-
-                      // Active page changes text color only.
-                      // No default underline.
                       isActive && "text-brand"
                     )
                   }
@@ -143,24 +140,6 @@ export default function Navbar() {
                           )}
                         />
                       )}
-
-                      {/* ================= HOVER ONLY UNDERLINE ================= */}
-                      <span
-                        className="
-                          absolute
-                          left-1/2
-                          -translate-x-1/2
-                          bottom-0
-                          h-[2px]
-                          w-0
-                          rounded-full
-                          bg-brand
-                          transition-all
-                          duration-300
-                          ease-out
-                          group-hover:w-full
-                        "
-                      />
                     </>
                   )}
                 </NavLink>
