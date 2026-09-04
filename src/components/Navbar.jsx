@@ -13,6 +13,7 @@ const NAV_ITEMS = [
       { to: "/review", label: "IADE Reviews" },
       { to: "/gallerys", label: "Our Gallery" },
     ],
+    to: "/about"
   },
 
   {

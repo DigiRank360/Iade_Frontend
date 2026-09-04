@@ -25,6 +25,7 @@ import hari from "./../assets/trainer/hari.png";
 import pratiksha from "./../assets/trainer/pratiksha.png";
 import pragati from "./../assets/trainer/pragati.png";
 
+
 // Slider Images
 const SLIDER_IMAGES = [sliderImg1, sliderImg2, sliderImg3];
 
@@ -363,7 +364,7 @@ export default function Home() {
               <div className="relative aspect-video w-full">
                 <iframe
                   className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                  src="https://player.cloudinary.com/embed/?cloud_name=jmgnlxsa&public_id=WhatsApp_Video_2026-09-03_at_16.09.32"
                   title="IADE Demo Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

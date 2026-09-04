@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Play, ChevronLeft, ChevronRight, X, ArrowRight, Sparkles, CheckCircle2, TrendingUp, Users, Award, Briefcase } from "lucide-react";
 import StatBlock from "../components/StatBlock.jsx";
 import { STATS } from "../utils/data.js";
+import Brochure from "../assets/Brochure.pdf";
+
 
 // Slider Images
 const HERO_SLIDER_IMAGES = [
@@ -9,6 +11,15 @@ const HERO_SLIDER_IMAGES = [
   "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
 ];
+
+const downloadBrochure = () => {
+  const link = document.createElement("a");
+  link.href = Brochure;
+  link.download = "Brochure.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -66,7 +77,7 @@ export default function HeroSection() {
               href="#curriculum"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-surface hover:bg-white/10 border border-white/10 text-paper font-semibold uppercase text-xs tracking-widest transition-all hover:border-brand/40"
             >
-              Download Brochure
+              <span onClick={downloadBrochure}>Download Brochure</span>
             </a>
           </div>
         </div>
