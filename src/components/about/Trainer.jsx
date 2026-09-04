@@ -42,6 +42,7 @@ import chetna from '../../assets/trainer/chetna.png';
 import pratiksha from '../../assets/trainer/pratiksha.png';
 import hari from '../../assets/trainer/hari.png';
 import pragati from '../../assets/trainer/pragati.png';
+import sahil from '../../assets/trainer/Sahil.jpeg';
 
 /* =========================================================
    TRAINERS
@@ -136,19 +137,18 @@ const TRAINERS = [
   },
   {
     id: 6,
-    name: 'Sahil',
+    name: 'Sahil Ali',
     role: 'WordPress & Full Stack Developer',
     specialty: 'WP & Full Stack Developer Mentor',
-    image:
-      'https://images.unsplash.com/photo-1714328564923-d4826427c991?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bWVuJTIwZm9ybWFsfGVufDB8fDB8fHww',
+    image: sahil,
     qualification: 'B-Tech, WordPress Certified, Full Stack Certified',
     experience: '2+ Years',
-    expertise: ['WordPress', 'React', 'Full Stack Development'],
+    expertise: ['WordPress', 'Node.js','React', 'Full Stack Development'],
     quote:
       'Code is poetry. I help my students write beautiful, functional code.',
     social: {
       linkedin: '#',
-      github: '#',
+      github: 'http://github.com/sahil786a'
     },
   },
 ];

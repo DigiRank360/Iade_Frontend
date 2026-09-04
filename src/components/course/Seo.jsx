@@ -5,6 +5,8 @@ import {
   Monitor, TrendingUp, Target, Globe, Search, Play, Laptop,
   Shield, BookOpen, Quote
 } from 'lucide-react';
+import Brochure from "./../../assets/Brochure.pdf";
+
 
 const Seo = () => {
   // --- State for Counters ---
@@ -123,6 +125,17 @@ const Seo = () => {
     { q: "Projects?", a: "Hands-on work on real SEO, GEO & AEO campaigns." },
     { q: "Placement Support?", a: "Resume building, interview preparation & job assistance." }
   ];
+
+
+
+const downloadBrochure = () => {
+  const link = document.createElement("a");
+  link.href = Brochure;
+  link.download = "Brochure.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   return (
     <div className="bg-[#000000] text-[#F5F5F5] font-sans overflow-x-hidden relative selection:bg-[#C8102E] selection:text-white">
@@ -244,7 +257,7 @@ const Seo = () => {
               <a href="https://wa.me/918319578939" className="hover-lift flex items-center gap-3 px-8 py-4 bg-[#C8102E] hover:bg-[#8C0B20] text-white font-bold rounded-xl shadow-2xl shadow-[#C8102E]/30 hover:shadow-[#C8102E]/60">
                 <Phone className="w-5 h-5" /> Reserve Your Seat
               </a>
-              <a href="#" className="hover-lift flex items-center gap-3 px-8 py-4 glass text-[#F5F5F5] font-bold rounded-xl hover:border-[#C8102E]/50">
+              <a onClick={downloadBrochure} className="hover-lift flex items-center gap-3 px-8 py-4 glass text-[#F5F5F5] font-bold rounded-xl hover:border-[#C8102E]/50">
                 <FileText className="w-5 h-5" /> View Syllabus
               </a>
             </div>

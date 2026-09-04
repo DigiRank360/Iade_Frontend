@@ -7,6 +7,7 @@ import {
   Scissors, Layers, Palette, Wand2, Youtube,
   Globe2, GripVertical, Clapperboard
 } from 'lucide-react';
+import Brochure from "./../../assets/Brochure.pdf";
 
 const VideoEditing = () => {
   // --- Counting stats ---
@@ -22,6 +23,16 @@ const VideoEditing = () => {
 
   // --- Accordion (curriculum) ---
   const [openModule, setOpenModule] = useState(0);
+
+
+  const downloadBrochure = () => {
+  const link = document.createElement("a");
+  link.href = Brochure;
+  link.download = "Brochure.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   const TABS = [
     {
@@ -291,7 +302,7 @@ const VideoEditing = () => {
                 <a href="https://wa.me/918319578939" className="magnetic inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brandDark text-paper font-bold rounded-lg transition-colors text-sm">
                   <Phone className="w-4 h-4" /> Reserve Your Seat
                 </a>
-                <a href="https://theiade.in/pdf.pdf" className="magnetic inline-flex items-center gap-2 px-6 py-3 border border-white/15 text-paper font-bold rounded-lg hover:border-brand/50 transition-colors text-sm">
+                <a onClick={downloadBrochure} className="magnetic inline-flex items-center gap-2 px-6 py-3 border border-white/15 text-paper font-bold rounded-lg hover:border-brand/50 transition-colors text-sm">
                   <FileText className="w-4 h-4" /> View Syllabus
                 </a>
               </div>
@@ -501,7 +512,7 @@ const VideoEditing = () => {
               <a href="https://wa.me/918319578939" className="magnetic inline-flex items-center gap-2 px-8 py-3.5 bg-brand hover:bg-brandDark text-paper font-black rounded-xl uppercase tracking-widest text-sm transition-colors">
                 <Phone className="w-4 h-4" /> Enroll Now <ArrowRight className="w-4 h-4" />
               </a>
-              <a href="https://theiade.in/pdf.pdf" className="magnetic inline-flex items-center gap-2 px-8 py-3.5 border border-white/15 text-paper font-black rounded-xl uppercase tracking-widest text-sm hover:border-brand/50 transition-colors">
+              <a onClick={downloadBrochure} className="magnetic inline-flex items-center gap-2 px-8 py-3.5 border border-white/15 text-paper font-black rounded-xl uppercase tracking-widest text-sm hover:border-brand/50 transition-colors">
                 <FileText className="w-4 h-4" /> View Syllabus
               </a>
             </div>

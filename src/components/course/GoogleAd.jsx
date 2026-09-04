@@ -5,6 +5,8 @@ import {
   Shield, BookOpen, Quote, Search, BarChart3, Target,
   ChevronDown, TrendingUp, MousePointerClick, Sparkles
 } from 'lucide-react';
+import Brochure from "./../../assets/Brochure.pdf";
+
 
 const GoogleAd = () => {
   // --- Counting stats ---
@@ -23,6 +25,16 @@ const GoogleAd = () => {
 
   // --- Quality score meter hover ---
   const [hoveredTrust, setHoveredTrust] = useState(null);
+
+
+  const downloadBrochure = () => {
+  const link = document.createElement("a");
+  link.href = Brochure;
+  link.download = "Brochure.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   useEffect(() => {
     let i = 0;
@@ -236,7 +248,7 @@ const GoogleAd = () => {
                 <a href="https://wa.me/918319578939" className="magnetic inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brandDark text-paper font-bold rounded-lg transition-colors text-sm">
                   <Phone className="w-4 h-4" /> Reserve Your Seat
                 </a>
-                <a href="#" className="magnetic inline-flex items-center gap-2 px-6 py-3 border border-white/15 text-paper font-bold rounded-lg hover:border-brand/50 transition-colors text-sm">
+                <a onClick={downloadBrochure} className="magnetic inline-flex items-center gap-2 px-6 py-3 border border-white/15 text-paper font-bold rounded-lg hover:border-brand/50 transition-colors text-sm">
                   <FileText className="w-4 h-4" /> View Syllabus
                 </a>
               </div>

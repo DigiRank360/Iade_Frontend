@@ -17,6 +17,18 @@ import {
   TrendingUp
 } from "lucide-react";
 
+import kusal from "./../../assets/trainer/kusal.png";
+import chetna from "./../../assets/trainer/chetna.png";
+import hari from "./../../assets/trainer/hari.png";
+import pratiksha from "./../../assets/trainer/pratiksha.png";
+import pragati from "./../../assets/trainer/pragati.png";
+import sahil from "./../../assets/trainer/Sahil.jpeg";
+import Alumni from "./../../assets/images/13.jpeg";
+import Alumni2 from "./../../assets/images/23.jpeg";
+import Alumni3 from "./../../assets/images/11.jpeg";
+
+
+
 // Simulated Data (Since I don't have your external files)
 const STATS = [
   ["500+", "Students Trained"],
@@ -41,17 +53,12 @@ const TESTIMONIALS = [
 ];
 
 const SLIDER_IMAGES = [
-  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
+  Alumni2,
+  Alumni
 ];
 
-const MARQUEE_IMAGES = [
-  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-];
+const MARQUEE_IMAGES = [kusal, chetna, hari, pratiksha, pragati,sahil];
+
 
 export default function DigitalMMC() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -234,7 +241,7 @@ export default function DigitalMMC() {
           
           <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative aspect-square">
             <img 
-              src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80" 
+              src={Alumni3} 
               alt="About IADE" 
               className="w-full h-full object-cover opacity-90 mix-blend-overlay"
             />
@@ -282,20 +289,30 @@ export default function DigitalMMC() {
           <p className="text-sm text-muted mt-2">Learn directly from practitioners with real-world agency experience.</p>
         </div>
 
-        <div className="relative w-full overflow-hidden z-10 py-2">
-          <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-ink to-transparent z-20 pointer-events-none" />
-          <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-ink to-transparent z-20 pointer-events-none" />
-
-          <div className="flex w-max animate-custom-marquee will-change-transform">
-            {[...MARQUEE_IMAGES, ...MARQUEE_IMAGES, ...MARQUEE_IMAGES].map((imgSrc, index) => (
-              <div key={index} className="px-4 shrink-0">
-                <div className="w-32 h-32 rounded-full border-2 border-white/10 p-1 bg-surface hover:border-brand transition-all duration-300">
-                  <img src={imgSrc} alt={`Mentor ${index}`} className="w-full h-full rounded-full object-cover" />
+         <div className="relative w-full overflow-hidden z-10 py-4">
+            <div className="flex w-max animate-custom-marquee will-change-transform">
+              {[...MARQUEE_IMAGES, ...MARQUEE_IMAGES, ...MARQUEE_IMAGES].map((imgSrc, index) => (
+                <div key={index} className="px-3 sm:px-4 shrink-0">
+                  <div className="group relative w-36 sm:w-48 h-48 sm:h-60 rounded-2xl overflow-hidden border border-white/10 bg-surface/80">
+                    <img
+                      src={imgSrc}
+                      alt={`IADE Mentor ${index + 1}`}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                      <p className="text-[8px] sm:text-[9px] font-mono uppercase text-brand font-semibold">
+                        Industry Mentor
+                      </p>
+                      <h3 className="text-xs sm:text-sm font-display font-bold uppercase text-paper">
+                        IADE Faculty
+                      </h3>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
       </section>
 
       {/* ====== TESTIMONIALS ====== */}
@@ -337,12 +354,12 @@ export default function DigitalMMC() {
             </button>
             <div className="relative aspect-video w-full">
               <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                title="IADE Demo Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+                  className="w-full h-full"
+                  src="https://player.cloudinary.com/embed/?cloud_name=jmgnlxsa&public_id=WhatsApp_Video_2026-09-03_at_16.09.32"
+                  title="IADE Demo Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
             </div>
           </div>
         </div>

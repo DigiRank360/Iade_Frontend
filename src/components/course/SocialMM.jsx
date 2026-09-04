@@ -6,6 +6,8 @@ import {
   ChevronDown, TrendingUp, Sparkles, Facebook, Instagram,
   Heart, MessageCircle, Share2, Megaphone, MoreHorizontal
 } from 'lucide-react';
+import Brochure from "./../../assets/Brochure.pdf";
+
 
 const SocialMM = () => {
   // --- Counting stats ---
@@ -137,6 +139,23 @@ const SocialMM = () => {
     { q: "Will I work on live campaigns?", a: "Yes, you'll work on real Meta Ads campaigns and build a strong portfolio." }
   ];
 
+
+
+
+const downloadBrochure = () => {
+  const link = document.createElement("a");
+  link.href = Brochure;
+  link.download = "Brochure.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+
+
+
+
+
   return (
     <div className="bg-ink text-paper font-body min-h-screen overflow-x-hidden relative selection:bg-brand selection:text-paper">
       <style>{`
@@ -259,7 +278,7 @@ const SocialMM = () => {
                 <a href="https://wa.me/918319578939" className="magnetic inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brandDark text-paper font-bold rounded-lg transition-colors text-sm">
                   <Phone className="w-4 h-4" /> Reserve Your Seat
                 </a>
-                <a href="https://theiade.in/pdf.pdf" className="magnetic inline-flex items-center gap-2 px-6 py-3 border border-white/15 text-paper font-bold rounded-lg hover:border-brand/50 transition-colors text-sm">
+                <a href="#" onClick={downloadBrochure} className="magnetic inline-flex items-center gap-2 px-6 py-3 border border-white/15 text-paper font-bold rounded-lg hover:border-brand/50 transition-colors text-sm">
                   <FileText className="w-4 h-4" /> View Syllabus
                 </a>
               </div>
@@ -482,7 +501,7 @@ const SocialMM = () => {
               <a href="https://wa.me/918319578939" className="magnetic inline-flex items-center gap-2 px-8 py-3.5 bg-brand hover:bg-brandDark text-paper font-black rounded-xl uppercase tracking-widest text-sm transition-colors">
                 <Phone className="w-4 h-4" /> Enroll Now <ArrowRight className="w-4 h-4" />
               </a>
-              <a href="https://theiade.in/pdf.pdf" className="magnetic inline-flex items-center gap-2 px-8 py-3.5 border border-white/15 text-paper font-black rounded-xl uppercase tracking-widest text-sm hover:border-brand/50 transition-colors">
+              <a onClick={downloadBrochure} className="magnetic inline-flex items-center gap-2 px-8 py-3.5 border border-white/15 text-paper font-black rounded-xl uppercase tracking-widest text-sm hover:border-brand/50 transition-colors">
                 <FileText className="w-4 h-4" /> View Syllabus
               </a>
             </div>

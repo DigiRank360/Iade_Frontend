@@ -12,6 +12,7 @@ const HERO_SLIDER_IMAGES = [
   "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
 ];
 
+
 const downloadBrochure = () => {
   const link = document.createElement("a");
   link.href = Brochure;
@@ -247,12 +248,12 @@ export default function HeroSection() {
             </button>
             <div className="relative aspect-video w-full">
               <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                title="IADE Demo Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+                  className="w-full h-full"
+                  src="https://player.cloudinary.com/embed/?cloud_name=jmgnlxsa&public_id=WhatsApp_Video_2026-09-03_at_16.09.32"
+                  title="IADE Demo Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
             </div>
           </div>
         </div>
